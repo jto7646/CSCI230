@@ -1,1 +1,4 @@
 Hello
+git add [files]
+git commit -m "Type a message here"
+git push -u origin master
