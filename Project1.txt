@@ -1,5 +1,0 @@
-Build a calculator program that uses the java console for input and output.
-Can use a new line for output. Input numbers can be double or integer. Can use
-math operators such as sqrt. Can use parenthesis. Make sure it throws an error 
-if an invalid input is entered, ie missing parenthisis or operand. Each number and
-opperator is input indevidually, enter hit after each one.
