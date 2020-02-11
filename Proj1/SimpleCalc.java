@@ -64,7 +64,7 @@ public class SimpleCalc {
                         break;
                     // vv Special opps checks vv
                     case "sqrt":
-                        if(lastIsNumb(list) == false){
+                        if(lastIsNumb(list) == false){ // check for parenth
                             list.add("s");
                             list.add("(");
                             System.out.println("(");
@@ -72,7 +72,7 @@ public class SimpleCalc {
                         else{System.out.println("Syntax error, not added.");}
                         break;
                     case "pow":
-                        if(lastIsNumb(list) == false){
+                        if(lastIsNumb(list) == false){ // has to be #, 15pow(2)
                             list.add("p");
                             list.add("(");
                             System.out.println("("); 
@@ -80,15 +80,12 @@ public class SimpleCalc {
                         else{System.out.println("Syntax error, not added.");}
                         break;
                     case "mod":
-
                         if(lastIsNumb(list) == false){
                             list.add("m");
                         }
                         else{System.out.println("Syntax error, not added.");}
                         break;
                     default:
-                        
-
                         if(list.size() == 0){
                             if(isNumb(inputString) == true){list.add(inputString);}
                             else{System.out.println("Syntax error, not added.");}
