@@ -21,6 +21,8 @@ public class SimpleCalc {
         int test = 0;//TESTING
 
        // while(!endProg){ // Loop holding the program
+
+        // look into parsing sqrt as double
             
             // vv Instruction output vv
             System.out.println("Simple clculator program: Press enter after each opperator or opperand.\nCan use parenthesis, dont include with special opperator.\nType \"=\" to compute");
@@ -72,7 +74,7 @@ public class SimpleCalc {
                         else{System.out.println("Syntax error, not added.");}
                         break;
                     case "pow":
-                        if(lastIsNumb(list) == false){ // has to be #, 15pow(2)
+                        if(lastIsNumb(list) == false){ // look at how pow works in java.
                             list.add("p");
                             list.add("(");
                             System.out.println("("); 
