@@ -24,8 +24,8 @@ public class PS1_Test{
         for( int i = 0; i <= test.length()-1; i++ ){
 
             tempChar = test.charAt(i);
-            if (Character.getNumericValue(tempChar) <= 9 && Character.getNumericValue(tempChar) != -1){ // Test for a number in the string by getting character value (0-9 for number, -1 for anything else)
-                intArray[arCount] = Character.getNumericValue(tempChar);
+            if (Character.getNumericValue(tempChar) <= 9 && Character.getNumericValue(tempChar) != -1){ // Test for a number in the string by getting 
+                intArray[arCount] = Character.getNumericValue(tempChar);                                    // character value (0-9 for number, -1 for anything else)
                 arCount++;
             }
             else {

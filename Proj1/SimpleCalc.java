@@ -1,3 +1,8 @@
+/* Simple calculator program
+    Created by: John "this chair hurts my ass" O'Leary
+    Date: Feb/12/2020
+    Version: 1.0
+*/
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.lang.Character;
@@ -14,25 +19,32 @@ public class SimpleCalc {
         ArrayList<String> list = new ArrayList<>(); // Used to store user input
         Boolean endProg = false;                    // Ends the program is user chooses; true = exit
         Boolean inputing = true;                    // Ends the user input loop; false = exit
-        Boolean compute = false;                
-        Boolean testing = true;
+        Boolean compute = true;                     // If false, will skip the calculation. false if error encountered              
         String testTemp = " ";                  // Used for error testing
         int parenthNum = 0;                     // Used to test for parenthesis pairs
-        int test = 0;//TESTING
 
-       // while(!endProg){ // Loop holding the program
+       while(!endProg){ // Loop holding the program
             
             // vv Instruction output vv
-            System.out.println("Simple clculator program: Press enter after each opperator or opperand.\nCan use parenthesis, dont include with special opperator.\nType \"=\" to compute");
-            System.out.println("Special opperators:\nSquare root: sqrt   Exponent: pow   Modulus: mod");
+            System.out.println("Simple clculator program: Press enter after each opperator or opperand.\nCan use parenthesis, dont include with special opperator.\nType \"=\" to compute. Type \"q\" to quit.");
+            System.out.println("Special opperators: First parenthesis added automatically, don't forget to close\nSquare root: sqrt #    Exponent: # pow #    Modulus: # mod #");
             System.out.println("*****************************************************");
             
+
+            // VV USER INPUT VV
 
             // vv User input loop vv
             while(inputing){ 
                 inputString = input.next();
                 
                 switch (inputString) {
+                    case "q":
+                        System.out.print("Exiting program: ");
+                        endProg = true;
+                        inputing = false;
+                        compute = false;
+                        list.add("q");
+                        break;
                     case "=":   // Exits input loop when "=" entered
                         inputing = false;
                         break;
@@ -40,99 +52,141 @@ public class SimpleCalc {
                     // ** functions used built under main **
                     case "+":
                         if(opCheck(list) == true){list.add("+");}
-                        else{System.out.println("Syntax error, not added.");}
+                        else{System.out.println("Syntax error, try again.");}
                         break;
                     case "-":
                         if(opCheck(list) == true){list.add("-");}
-                        else{System.out.println("Syntax error, not added.");}
+                        else{System.out.println("Syntax error, try again.");}
                         break;
                     case "*":
                         if(opCheck(list) == true){list.add("*");}
-                        else{System.out.println("Syntax error, not added.");}
+                        else{System.out.println("Syntax error, try again.");}
                         break;
                     case "/":
                         if(opCheck(list) == true){list.add("/");}
-                        else{System.out.println("Syntax error, not added.");}
+                        else{System.out.println("Syntax error, try again.");}
                         break;
                     case "(":
                         if(leftCheck(list) == true){list.add("(");}
-                        else{System.out.println("Syntax error, not added.");}
+                        else{System.out.println("Syntax error, try again.");}
                         break;
                     case ")":
                         if(rightCheck(list) == true){list.add(")");}
-                        else{System.out.println("Syntax error, not added.");}
+                        else{System.out.println("Syntax error, try again.");}
                         break;
                     // vv Special opps checks vv
                     case "sqrt":
-                        if(lastIsNumb(list) == false){ // check for parenth
+                        if(list.size() == 0){ // for empty list, ok
                             list.add("s");
                             list.add("(");
                             System.out.println("(");
                         }
-                        else{System.out.println("Syntax error, not added.");}
+                        else{ // vv checks if last is number of left parenthesis, blocks if number true or parenthesis false
+                            if(lastIsNumb(list) == false || list.get(list.size() - 1) == "("){ 
+                                list.add("s");
+                                list.add("(");
+                                System.out.println("("); 
+                            }
+                            else{System.out.println("Syntax error, try again.");}
+                            }
                         break;
                     case "pow":
-                        if(lastIsNumb(list) == false){ // has to be #, 15pow(2)
-                            list.add("p");
-                            list.add("(");
-                            System.out.println("("); 
+                        if(list.size() == 0){ // for empty list, bad
+                            System.out.println("Syntax error, try again.");
                         }
-                        else{System.out.println("Syntax error, not added.");}
+                        else{ // vv checks if last is number of right parenthesis, blocks if both false vv
+                            if(lastIsNumb(list) == true || list.get(list.size() -1 ) == ")"){ 
+                                list.add("p");
+                                list.add("(");
+                                System.out.println("("); 
+                            }
+                            else{System.out.println("Syntax error, try again.");}
+                            }
                         break;
                     case "mod":
-                        if(lastIsNumb(list) == false){
-                            list.add("m");
+                        if(list.size() == 0){ // for empty list, bad
+                            System.out.println("Syntax error, try again.");
                         }
-                        else{System.out.println("Syntax error, not added.");}
+                        else{ // vv checks if last is number of right parenthesis, blocks if both false vv
+                            if(lastIsNumb(list) == true || list.get(list.size() -1 ) == ")"){ 
+                                list.add("m");
+                                list.add("(");
+                                System.out.println("("); 
+                            }
+                            else{System.out.println("Syntax error, try again.");}
+                            }
                         break;
                     default:
                         if(list.size() == 0){
                             if(isNumb(inputString) == true){list.add(inputString);}
-                            else{System.out.println("Syntax error, not added.");}
+                            else{System.out.println("Syntax error, try again.");}
                         }
                         else{
                             if(lastIsNumb(list) == false && isNumb(inputString) && list.get(list.size() - 1) !=")"){list.add(inputString);}
-                            else{System.out.println("Syntax error, not added.");}
+                            else{System.out.println("Syntax error, try again.");}
                         }
                         break;
                 }
-            }
+            }//bottom input loop
             inputing = true;
 
+            // vv Prints out user input vv
+            System.out.print("Your input: ");
+            for(int i = 0; i <= list.size() - 1; i++){
+                System.out.print(list.get(i) + " ");
+            }
+            System.out.println(" ");
+
+
+            // VV ERROR CHECKING VV
+
             // vv Checks the last entered item on the list for correctness vv
-            if(lastIsNumb(list) == false || list.get(list.size() - 1) != ")"){
+            if(!endProg && lastIsNumb(list) == false && list.get(list.size() - 1) != ")"){
                 System.out.println("Syntax error: end of input string");
-                // SKIP CALCULATION STEP
+                compute = false; // Error, skips computation
             }
            
 
             // vv Used to check for correct parenthesis pairs vv
             // Adds one to counter if Left, subtracts one if right. If counter is 0, the parenthesis are paired
-            for(int i = 0; i < list.size() - 1; i++){
+            for(int i = 0; i <= list.size() - 1; i++){
                 testTemp = list.get(i); // Stores next item in array list for checking
                 switch (testTemp) {
                     case "(":
                         parenthNum++;
                         break;
                     case ")":
-                        parenthNum--;
+                        parenthNum -= 1;
                     default:
                         break;
                 }
             }
             if(parenthNum != 0){
                 System.out.println("Syntax error: missmatched parenthesis.");
-                    // SKIP COMPUTATION STEP!!
+                    compute = false; // Error, skips computation
             }
 
 
-                
+            // VV COMPUTATION VV
 
-               
-        System.out.println(list);
-        System.out.println("Size " + list.size());//TESTING
+            // vv Calls function to do the calculations, functions below main
+            if(compute){
+            calc(list);
+
+            if(list.contains("Infinity")){ // list will contain "Infinity" if there was something divided by zero
+                System.out.println("Math Error: Divide by Zero");
+            }
+            else{
+                System.out.println("Answer: " + list + "\n\n\n");  // prints answer if there wasnt an issue
+            }
+            }
+            compute = true;
+            list.clear();
+
+        };//bottom progLoop
+        System.out.println("Goodbye");
         input.close();
-    } 
+    }//bottom main()
 
 
 
@@ -141,7 +195,7 @@ public class SimpleCalc {
 
 
 
-
+    // VV FUNCTION LIST VV
 
 
 
@@ -183,7 +237,7 @@ public class SimpleCalc {
         if(arr.size() == 0){return false;} 
         temp = arr.get(arr.size() - 1);
         // vv check fails if last item is not a number
-        if(isNumb(temp) == true){return true;} 
+        if(isNumb(temp) == true || temp == ")"){return true;} 
         else{return false;}
     }
 
@@ -197,8 +251,213 @@ public class SimpleCalc {
         if(isNumb(temp) == false && temp != ")"){return true;} 
         else{return false;}
     }
+
+    // vv Function for doing opperations within parenthesis
+    public static void parOps(ArrayList<String> arr, int index){
+        arr.remove(index); // removes the "("
+
+        // vv loop for reading through arraylist vv
+        for(int i = index; i <= arr.size() - 1; i++){
+            switch (arr.get(i)) { // item in arraylist at i
+                case ")":      // if right parenth, exit function
+                    arr.remove(i);// removes ")"
+                    return;
+                case "(":      // if left parenth, use recursion to calculate inner parenthesis
+                    parOps(arr, i);
+                    break;
+                default:        // if a number, do inner opperations
+                    if(isNumb(arr.get(i))){
+                        Double tempD1 = Double.parseDouble(arr.get(i));
+                        Double tempD2 = 0.00;
+
+                        // vv checks the opperator next to the number vv 
+                        switch (arr.get(i + 1)) {
+                            case ")":
+                                arr.remove(i + 1); // removes ")"
+                                return;
+                            // vv normal ops vv
+                            case "*":
+                                if(arr.get(i+2) == "("){parOps(arr, i + 2);}                                                    
+                                tempD2 = Double.parseDouble(arr.get(i+2)); // grabs number to right of opperator
+                                tempD1 = tempD1 * tempD2;
+                                arr.remove(i);      // removes first number
+                                arr.remove(i);      // removes opperator
+                                arr.remove(i);      // removes number to right of opperator
+                                arr.add(i, Double.toString(tempD1));    // puts answer in list
+                                break;
+                            case "/":
+                                if(arr.get(i+2) == "("){parOps(arr, i + 2);} 
+                                tempD2 = Double.parseDouble(arr.get(i+2)); // div by zero error check? try catch
+                                try {
+                                    tempD1 = tempD1 / tempD2;
+                                } catch (Exception e) {
+                                    System.out.println("Error: Divide by zero");
+                                    return;
+                                }
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.add(i, Double.toString(tempD1));
+                                break;
+                            case "+":
+                                if(arr.get(i+2) == "("){parOps(arr, i + 2);}                                                
+                                tempD2 = Double.parseDouble(arr.get(i+2));
+                                tempD1 = tempD1 + tempD2;
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.add(i, Double.toString(tempD1));
+                                break;
+                            case "-":
+                                if(arr.get(i+2) == "("){parOps(arr, i + 2);}                                                    
+                                tempD2 = Double.parseDouble(arr.get(i+2));
+                                tempD1 = tempD1 - tempD2;
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.add(i, Double.toString(tempD1));
+                                break;
+                            // vv special ops vv
+                            case "m":
+                                if(arr.get(i+2) == "("){parOps(arr, i + 2);}   
+                                tempD2 = Double.parseDouble(arr.get(i+2));
+                                tempD1 = tempD1 % tempD2;
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.remove(i);
+                                arr.add(i, Double.toString(tempD1));
+                                break;
+                            case "p":                                                                                                   
+                                parOps(arr, i + 2); // Does opperations inside power parenthesis
+                                tempD2 = Double.parseDouble(arr.get(i + 2));
+                                tempD1 = Math.pow(tempD1, tempD2);
+                                arr.remove(i); // delete first # 
+                                arr.remove(i); // delete p
+                                arr.remove(i); // delete second #
+                                arr.add(i, Double.toString(tempD1)); // replace with answer
+                                break;
+                            default:
+                                System.out.println("Error: parOps_NumSwitch");
+                                return;
+                        }
+                    }
+                    else{ i -= 2; } // For indexing issue with nested parenthesis
+                    break;
+            }
+        }; 
+    }//bottom parOps()
+
+
+    // vv function does opperations outside of parenthesis
+    public static void calc(ArrayList<String> arr){
+        Double tempD1 = 0.00;
+        Double tempD2 = 0.00;
+
+        // vv Loop calculates things inside parenthesis, Function above
+        for(int i = 0; i <= arr.size() - 1; i++){
+            if(arr.get(i) == "("){
+                parOps(arr, i); 
+            }
+        }
+
+        // vv Loop calculates sqrt and pow
+        for(int i = 0; i <= arr.size() - 1; i++){
+            switch (arr.get(i)) {
+                case "s":
+                    tempD1 = Double.parseDouble(arr.get(i + 1));
+                    tempD1 = Math.sqrt(tempD1);
+                    arr.remove(i);
+                    arr.remove(i);
+                    arr.add(i, Double.toString(tempD1));
+                    break;
+                case "p": 
+                    //parOps(arr, i + 2); // Does opperations inside power parenthesis
+                    tempD1 = Double.parseDouble(arr.get(i - 1));
+                    tempD2 = Double.parseDouble(arr.get(i + 1));
+                    tempD1 = Math.pow(tempD1, tempD2);
+                    arr.remove(i); // delete first # 
+                    arr.remove(i); // delete p
+                    arr.remove(i); // delete second #
+                    arr.add(i, Double.toString(tempD1)); // replace with answer
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        // vv loop calculates Multiply/Divide/Modulus
+        for(int i = 0; i <= arr.size() - 1; i++){
+            switch (arr.get(i)) {
+                case "*":
+                    tempD1 = Double.parseDouble(arr.get(i - 1)); // grabs number from left
+                    tempD2 = Double.parseDouble(arr.get(i + 1)); // grabs number from right
+                    tempD1 = tempD1 * tempD2; // does opperation
+                    i -= 1;                    // moves index to number on left
+                    arr.remove(i);  // removes left number
+                    arr.remove(i);  // removes opperator
+                    arr.remove(i);  // removes right number 
+                    arr.add(i, Double.toString(tempD1)); // replaces with answer
+                    break;
+                case "/":
+                    tempD1 = Double.parseDouble(arr.get(i - 1));
+                    tempD2 = Double.parseDouble(arr.get(i + 1));
+                    try {
+                        tempD1 = tempD1 / tempD2;
+                    } catch (Exception e) {
+                        System.out.println("Error: Divide by Zero");
+                    }
+                    i -= 1;
+                    arr.remove(i);
+                    arr.remove(i);
+                    arr.remove(i);
+                    arr.add(i, Double.toString(tempD1));
+                    break;
+                case "m":
+                    tempD1 = Double.parseDouble(arr.get(i - 1));
+                    tempD2 = Double.parseDouble(arr.get(i + 1));
+                    tempD1 = tempD1 % tempD2;
+                    i -= 1;
+                    arr.remove(i);
+                    arr.remove(i);
+                    arr.remove(i);
+                    arr.add(i, Double.toString(tempD1));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Loop Calculates Add/Subtract
+        for(int i = 0; i <= arr.size() - 1; i++){
+            switch (arr.get(i)) {
+                case "+":
+                tempD1 = Double.parseDouble(arr.get(i - 1));
+                tempD2 = Double.parseDouble(arr.get(i + 1));
+                tempD1 = tempD1 + tempD2;
+                i -= 1;
+                arr.remove(i);
+                arr.remove(i);
+                arr.remove(i);
+                arr.add(i, Double.toString(tempD1));
+                break;
+            case "-":
+                tempD1 = Double.parseDouble(arr.get(i - 1));
+                tempD2 = Double.parseDouble(arr.get(i + 1));
+                tempD1 = tempD1 - tempD2;
+                i -= 1;
+                arr.remove(i);
+                arr.remove(i);
+                arr.remove(i);
+                arr.add(i, Double.toString(tempD1));
+                break;
+            default:
+                break;
+            }
+        }
+       return; 
+    }//bottom calc()
     
-}
+}//bottom class
 
 
 
