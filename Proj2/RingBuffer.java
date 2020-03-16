@@ -46,9 +46,9 @@ public void enqueue(Double x){
    }
 }
 
-public Double dequeue(){
+public Double dequeue() throws RingBufferException{ // TODO: FIX EXCEPTIONS
     if(isEmpty()){
-        throw new ArrayIndexOutOfBoundsException("Dequeue error...");
+        throw new RingBufferException("Dequeue attempt with empty buffer...");
     }
 
     Double temp = buffer[firstIndex];
