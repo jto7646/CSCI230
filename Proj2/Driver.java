@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 /**
  * Driver
  */
@@ -6,16 +8,18 @@ public class Driver {
     public static void main(String[] args) {
         RingBuffer testing = new RingBuffer(5);
 
-        testing.enqueue(12.5);
-        testing.enqueue(45.6);
-
-        System.out.println(testing.size());
+        try {
+            testing.enqueue(12.5);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        //testing.enqueue(12.5);
         
-        testing.enqueue(32.50);
-        //System.out.println(testing.dequeue());
-        //System.out.println(testing.dequeue());
-        testing.enqueue(45.6);
-        testing.enqueue(63.2);
-        testing.enqueue(68.23);
+       // testing.enqueue(12.5);
+        
+       for(int i = 0; i < 25; i++){
+           System.out.println(Math.random()-.5);
+       }
+
     }
 }
