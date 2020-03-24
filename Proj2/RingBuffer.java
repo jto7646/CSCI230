@@ -50,7 +50,7 @@ public int size(){
 }
 
 /**
- * Adds a given double to the RingBuffer, will throw exception if the RingBuffer is full.
+ * Adds a given double to the end of the RingBuffer, will throw exception if the RingBuffer is full.
  * @param x
  * @throws RingBufferException
  */
