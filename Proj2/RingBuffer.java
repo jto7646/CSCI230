@@ -1,10 +1,9 @@
 
-
 import java.util.Arrays;
 import java.lang.Exception;
 
 /**
- * Ringbuffer
+ * Ringbuffer creates a Que used to store Double values
  * @author John T OLeary
  * @version 1.0
  * @since March/16/2020
@@ -17,7 +16,7 @@ private int firstIndex, lastIndex;  // Variables that store the location of the 
 
 
 /**
- * Creates a RingBuffer of default size 100. Acts like a Que.
+ * Creates a RingBuffer of default size 100. 
  */
 public RingBuffer(){
     buffer = new Double[100];
@@ -25,7 +24,7 @@ public RingBuffer(){
 }
 
 /**
- * Creates a RingBuffer of size given by int parameter. Acts like a Que.
+ * Creates a RingBuffer of size given by int parameter. 
  * @param capacity
  */
 public RingBuffer(int capacity){

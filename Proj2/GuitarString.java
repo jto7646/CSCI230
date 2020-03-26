@@ -2,12 +2,15 @@ import java.lang.Math;
 
 /**
  * GuitarString
+ * @author John O'Leary
+ * @version 1.0
+ * @since March/16/2020
  */
 public class GuitarString {
 
     private RingBuffer sampleRate;  // RingBuffer holding the samples 
-    private Double  temp, tempFirst, tempSecond, tempAverage; // These are for the tic() function
-    private static int ticNumber = 0;
+    private Double  temp, tempFirst, tempSecond, tempAverage; // Variables for the tic() function
+    private static int ticNumber = 0;   // Keeps track of the number of times tic() is called
 
     /**
      * Creates a guitar string with a sample rate of to given frequency
@@ -96,7 +99,7 @@ public class GuitarString {
      * Returns the first sample in the buffer
      * @return
      */
-    Double sample(){
+    double sample(){
         temp = 0.00;
         try {
             temp = sampleRate.peek();

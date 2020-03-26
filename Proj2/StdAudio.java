@@ -1,4 +1,4 @@
-package stdlib;
+//package stdlib;
 
 /******************************************************************************
  *  Compilation:  javac StdAudio.java
