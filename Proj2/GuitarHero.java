@@ -37,7 +37,7 @@ public class GuitarHero {
                 } 
 
                 StdAudio.play(sample);
-                //System.out.println(key + " " + index);
+                System.out.println(key + " " + index);
 
             
 
