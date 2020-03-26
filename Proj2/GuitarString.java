@@ -14,7 +14,7 @@ public class GuitarString {
 
     /**
      * Creates a guitar string with a sample rate of to given frequency
-     * @param frequency
+     * @param frequency of string
      */
     public GuitarString(Double frequency){
         temp = Math.ceil(44100/frequency);
@@ -31,7 +31,7 @@ public class GuitarString {
 
     /**
      * Creates a guitar string of values given in a double array
-     * @param init
+     * @param init, array of initial values
      */
     public GuitarString(Double[] init){
         sampleRate = new RingBuffer(init.length); // Creates a new RingBuffer with the same length as given array
@@ -97,7 +97,7 @@ public class GuitarString {
 
     /**
      * Returns the first sample in the buffer
-     * @return
+     * @return double sample
      */
     double sample(){
         temp = 0.00;
@@ -111,7 +111,7 @@ public class GuitarString {
 
     /**
      * Returns the number of simulation steps taken
-     * @return
+     * @return int time
      */
     int time(){
         return ticNumber;

@@ -4,6 +4,9 @@ import java.lang.reflect.Array;
 
 /**
  * GuitarHero
+ * @author John OLeary
+ * @version 1.0
+ * @since March/25/2020
  */
 public class GuitarHero {
 
@@ -30,15 +33,11 @@ public class GuitarHero {
                 //index = -1;
                      // find index of key in string keyboard  
             }
+            
+            if(index != -1){
+            sample = keyValues[index].sample();}
 
-                sample = 0.00;
-                for(int i = 0; i < 37; i++){
-                    sample += keyValues[i].sample();
-                } 
-
-                StdAudio.play(sample);
-                System.out.println(key + " " + index);
-
+            StdAudio.play(sample);
             
 
             for(int i = 0; i < 37; i++){

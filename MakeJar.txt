@@ -1,0 +1,4 @@
+Creating jar file
+ -in manefest.txt -- Main-Class: GuiterHero (must have new line bellow)
+
+jar cfmv GuitarHero.jar manafest.txt *
