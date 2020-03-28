@@ -1,3 +1,4 @@
+
 import java.lang.Math;
 
 /**
@@ -49,7 +50,7 @@ public class GuitarString {
      * Plucks a guitar string by filling it with random values between 0.5 and -0.5
      */
     void pluck(){
-        while (!sampleRate.isEmpty()) { // Empties the RingBuffer of values
+       while (!sampleRate.isEmpty()) { // Empties the RingBuffer of values
             try {
                 sampleRate.dequeue();
             } catch (Exception e) {

@@ -51,7 +51,7 @@ public int size(){
 /**
  * Adds a given double to the end of the RingBuffer, will throw exception if the RingBuffer is full.
  * @param x
- * @throws RingBufferException
+ * @throws RingBufferException If RingBuffer is full
  */
 public void enqueue(Double x) throws RingBufferException{
    if(buffer[lastIndex] == null){
@@ -66,7 +66,7 @@ public void enqueue(Double x) throws RingBufferException{
 /**
  * Returns the first item in the RingBuffer, then removes it from the Buffer
  * @return Double 
- * @throws RingBufferException
+ * @throws RingBufferException If RingBuffer is empty
  */
 public Double dequeue() throws RingBufferException{ 
     if(isEmpty()){ //If the buffer is empty, throws an exception
@@ -82,7 +82,7 @@ public Double dequeue() throws RingBufferException{
 /**
  * Returns the first item in the RingBuffer, does not remove it from the buffer
  * @return Double 
- * @throws RingBufferException
+ * @throws RingBufferException If RingBuffer is empty
  */
 public Double peek() throws RingBufferException{
     if(isEmpty()){ //If the buffer is empty, throws an exception
