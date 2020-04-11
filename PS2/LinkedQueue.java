@@ -98,6 +98,7 @@ public class LinkedQueue<E> implements Queue<E> {
 
     // Bellow main function used for testing
     
+    /*
     public static void main(String[] args) {
       LinkedQueue test = new LinkedQueue<Integer>();
       LinkedQueue test2 = new LinkedQueue<Integer>();
@@ -125,7 +126,7 @@ public class LinkedQueue<E> implements Queue<E> {
 
 
     }
-    
+    */
 
 
 }// ************ END OF CLASS *************

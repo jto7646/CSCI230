@@ -229,10 +229,48 @@ public abstract class AbstractTree<E> implements Tree<E> {
     return snapshot;
   }
 
- public Iterable<Position<E>> preorderLazy(){
+
+  // ****************  NEW SHIZ BELLOW *****************
+
+  private class PreorderIterator implements Iterator<E> {
+    Iterator<Position<E>> posIterator = positions().iterator();
+    public boolean hasNext() { return posIterator.hasNext(); }
+    public E next() { return posIterator.next().getElement(); } // return element!
+    public void remove() { posIterator.remove(); }
+    // boolean nextValid
 
 
- }
+    // What happens if you delete or add nodes to the tree if this iterator exists
+    //    1) If a deletion in the "future" of the iterator happens
+    //        - Nothing
+    //    2) If a delete or add nodes in the "past" of the preorder traversal
+    //        - Iterator is invaldi (use the boolean)
+    //    3) If we delete what the iterator is currently pointing to
+    //        - Iterator is invalid
+
+    // Can maintain some data structure to keep track of the nodes you have visited, or the nodes which
+    // still need to be visited (stack maybe)
 
 
+    public Iterator<E> lazyIterator() { return new PreorderIterator();}
+
+    public Iterable<Position<E>> lazyPreorder() {
+  
+
+      return posIterator;
+      // Maybe start at root, the return everything to the left, until !hasNext()
+      //then go up an start checking the right positions
+  
+    }
+  }
+
+ 
+
+
+
+
+
+  // **************** NEW SHIZ ABOVE ********************
+
+ 
 }// ***************** END OF CLASS ************************
