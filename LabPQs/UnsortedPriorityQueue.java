@@ -99,4 +99,30 @@ public class UnsortedPriorityQueue<K,V> extends AbstractPriorityQueue<K,V> {
    */
   @Override
   public int size() { return list.size(); }
-}
+
+
+
+
+
+
+  // ******** NEW STUFF BELLOW ***************
+
+  public Position<Entry<K,V>> findMax(){
+    Position<Entry<K,V>> big = list.first();
+    for (Position<Entry<K,V>> walk : list.positions())
+      if (compare(walk.getElement(), big.getElement()) > 0)
+        big = walk;      // found an even larger key
+    return big;
+  }
+
+  public Entry<K,V> max(){
+    if(list.isEmpty()){return null;}
+    return findMax().getElement();
+  }
+
+  public Entry<K,V> removeMax(){
+    if(list.isEmpty()){return null;}
+    return list.remove(findMax());
+  } 
+
+}// ********* END OF CLASS ************

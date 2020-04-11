@@ -23,6 +23,9 @@
 
 import java.util.Iterator;
 import java.util.List;         // for use as snapshot iterator
+
+import LinkedBinaryTree.Node;
+
 import java.util.ArrayList;    // for use as snapshot iterator
 
 /**
@@ -254,14 +257,10 @@ public abstract class AbstractTree<E> implements Tree<E> {
 
     public Iterator<E> lazyIterator() { return new PreorderIterator();}
 
-    public Iterable<Position<E>> lazyPreorder() {
-  
-
-      return posIterator;
-      // Maybe start at root, the return everything to the left, until !hasNext()
-      //then go up an start checking the right positions
-  
+    public Iterable<Position<E>> lazyPreorder(){
+      Queue<Position<E>> nodes = new LinkedQueue<>();
     }
+
   }
 
  
