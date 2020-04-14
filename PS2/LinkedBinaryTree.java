@@ -302,12 +302,13 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     LinkedBinaryTree<String> tree = new LinkedBinaryTree();
     Position<String> temp = tree.addRoot("Start");
     temp = tree.addLeft(temp, "A");
-    tree.addLeft(temp, "C");
-    tree.addRight(temp, "B");
+    tree.addRight(temp, "C");
+    tree.addLeft(temp, "B");
 
     Iterable<Position<String>> it = tree.preorder();
+    Iterable<Position<String>> test = tree.children(tree.left(tree.root()));
 
-    for(Position<String> p : it ){
+    for(Position<String> p : test ){
       System.out.println(p.getElement());
     }
 

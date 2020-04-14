@@ -23,8 +23,9 @@
 
 import java.util.Iterator;
 import java.util.List;         // for use as snapshot iterator
+import java.util.Stack;
 
-import LinkedBinaryTree.Node;
+//import LinkedBinaryTree.Node;
 
 import java.util.ArrayList;    // for use as snapshot iterator
 
@@ -50,7 +51,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
   @Override
-  public boolean isInternal(Position<E> p) { return numChildren(p) > 0; }
+  public boolean isInternal(final Position<E> p) { return numChildren(p) > 0; }
 
   /**
    * Returns true if Position p does not have any children.
@@ -60,7 +61,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
   @Override
-  public boolean isExternal(Position<E> p) { return numChildren(p) == 0; }
+  public boolean isExternal(final Position<E> p) { return numChildren(p) == 0; }
 
   /**
    * Returns true if Position p represents the root of the tree.
@@ -69,7 +70,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @return true if p is the root of the tree, false otherwise
    */
   @Override
-  public boolean isRoot(Position<E> p) { return p == root(); }
+  public boolean isRoot(final Position<E> p) { return p == root(); }
 
   /**
    * Returns the number of children of Position p.
@@ -79,9 +80,9 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
   @Override
-  public int numChildren(Position<E> p) {
+  public int numChildren(final Position<E> p) {
     int count=0;
-    for (Position child : children(p)) count++;
+    for (final Position child : children(p)) count++;
     return count;
   }
 
@@ -92,7 +93,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
   @Override
   public int size() {
     int count=0;
-    for (Position p : positions()) count++;
+    for (final Position p : positions()) count++;
     return count;
   }
 
@@ -110,7 +111,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @param p A valid Position within the tree
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
-  public int depth(Position<E> p) throws IllegalArgumentException {
+  public int depth(final Position<E> p) throws IllegalArgumentException {
     if (isRoot(p))
       return 0;
     else
@@ -123,7 +124,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    */
   private int heightBad() {             // works, but quadratic worst-case time
     int h = 0;
-    for (Position<E> p : positions())
+    for (final Position<E> p : positions())
       if (isExternal(p))                // only consider leaf positions
         h = Math.max(h, depth(p));
     return h;
@@ -135,9 +136,9 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @param p A valid Position within the tree
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
-  public int height(Position<E> p) throws IllegalArgumentException {
+  public int height(final Position<E> p) throws IllegalArgumentException {
     int h = 0;                          // base case if p is external
-    for (Position<E> c : children(p))
+    for (final Position<E> c : children(p))
       h = Math.max(h, 1 + height(c));
     return h;
   }
@@ -173,9 +174,9 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @param p       Position serving as the root of a subtree
    * @param snapshot  a list to which results are appended
    */
-  private void preorderSubtree(Position<E> p, List<Position<E>> snapshot) {
+  private void preorderSubtree(final Position<E> p, final List<Position<E>> snapshot) {
     snapshot.add(p);                       // for preorder, we add position p before exploring subtrees
-    for (Position<E> c : children(p))
+    for (final Position<E> c : children(p))
       preorderSubtree(c, snapshot);
   }
 
@@ -184,7 +185,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @return iterable collection of the tree's positions in preorder
    */
   public Iterable<Position<E>> preorder() {
-    List<Position<E>> snapshot = new ArrayList<>();
+    final List<Position<E>> snapshot = new ArrayList<>();
     if (!isEmpty())
       preorderSubtree(root(), snapshot);   // fill the snapshot recursively
     return snapshot;
@@ -196,8 +197,8 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @param p       Position serving as the root of a subtree
    * @param snapshot  a list to which results are appended
    */
-  private void postorderSubtree(Position<E> p, List<Position<E>> snapshot) {
-    for (Position<E> c : children(p))
+  private void postorderSubtree(final Position<E> p, final List<Position<E>> snapshot) {
+    for (final Position<E> c : children(p))
       postorderSubtree(c, snapshot);
     snapshot.add(p);                       // for postorder, we add position p after exploring subtrees
   }
@@ -207,7 +208,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @return iterable collection of the tree's positions in postorder
    */
   public Iterable<Position<E>> postorder() {
-    List<Position<E>> snapshot = new ArrayList<>();
+    final List<Position<E>> snapshot = new ArrayList<>();
     if (!isEmpty())
       postorderSubtree(root(), snapshot);   // fill the snapshot recursively
     return snapshot;
@@ -218,29 +219,61 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @return iterable collection of the tree's positions in breadth-first order
    */
   public Iterable<Position<E>> breadthfirst() {
-    List<Position<E>> snapshot = new ArrayList<>();
+    final List<Position<E>> snapshot = new ArrayList<>();
     if (!isEmpty()) {
-      Queue<Position<E>> fringe = new LinkedQueue<>();
+      final Queue<Position<E>> fringe = new LinkedQueue<>();
       fringe.enqueue(root());                 // start with the root
       while (!fringe.isEmpty()) {
-        Position<E> p = fringe.dequeue();     // remove from front of the queue
+        final Position<E> p = fringe.dequeue();     // remove from front of the queue
         snapshot.add(p);                      // report this position
-        for (Position<E> c : children(p))
+        for (final Position<E> c : children(p))
           fringe.enqueue(c);                  // add children to back of queue
       }
     }
     return snapshot;
   }
+ 
 
 
   // ****************  NEW SHIZ BELLOW *****************
 
   private class PreorderIterator implements Iterator<E> {
-    Iterator<Position<E>> posIterator = positions().iterator();
+
+
+    Iterator<Position<E>> posIterator = root();
+
+
     public boolean hasNext() { return posIterator.hasNext(); }
-    public E next() { return posIterator.next().getElement(); } // return element!
+    public E next() { return helper(posIterator).getElement(); } // return element!
+
+
+    // VV Franks help function bellow, will never work
+    private Position<E> helper(Position<E> currentPos){
+
+      if((parent(currentPos) == null ) //LEAVE
+
+      Iterator<Position<E>> siblings = children(parent(currentPos));
+
+      //Iterate through all the siblings (including currentPos)
+      while(siblings.hasNext()){
+        if(siblings.next() == currentPos) break;
+      }
+
+      // The next sibling is the next in line to be traversed
+
+      // If the next sibling is null (no other siblings), so we should go to the parent
+      // If the next sibling is not null, then that is going to be the next thing we return
+
+      if(posIterator == null){
+        nextValid = false;
+        return null;
+      }
+    }
+
+
     public void remove() { posIterator.remove(); }
-    // boolean nextValid
+    private Position<E> nextItem;   // Position of next item
+    boolean nextValid;      // Is next item valid?
 
 
     // What happens if you delete or add nodes to the tree if this iterator exists
@@ -257,16 +290,27 @@ public abstract class AbstractTree<E> implements Tree<E> {
 
     public Iterator<E> lazyIterator() { return new PreorderIterator();}
 
+    
     public Iterable<Position<E>> lazyPreorder(){
-      Queue<Position<E>> nodes = new LinkedQueue<>();
+      final List<Position<E>> snapshot = new ArrayList<>();
+      if (!isEmpty())
+        preorderSubtree(root(), snapshot);   // fill the snapshot recursively
+      return snapshot;
+
+
+      // while root hasnt been hit for final time
+      // go left until end is hit 
+      // check left end parent for right, the that right for children
+      // then go up, checking the rights, also for rights children.
+      // end when node has no parent, which is the root
+
+
+      // children returns two, go to the frist one until an external is hit, store the location
+      // that wasn't checked in a stack for later checking.
+
     }
 
   }
-
- 
-
-
-
 
 
   // **************** NEW SHIZ ABOVE ********************
