@@ -16,6 +16,20 @@ public class HeapSort <E> {
 			S.addLast(element); // the smallest key in P is next placed in S
 		}
 	}
+
+	public static <E> void sortInPlace(PositionalList<E> S, HeapPriorityQueue<E, E> P){
+
+		// Phase1 Start at the first position(Lock in as heap root), then heapify the list
+		// Phase2 Start removing the min values from heap, creating sorted list
+
+		// Phase 1 VV
+		int n = S.size();
+		for(int i = 0; i < n; i++){
+			S.
+		}
+		
+	}
+	
 	
 	public static void main(String[] args) {
 		LinkedPositionalList<Integer> list = new LinkedPositionalList<Integer>();
@@ -42,7 +56,7 @@ public class HeapSort <E> {
 		System.out.println("\n----------");
 		
 		LinkedPositionalList<Integer> list2 = new LinkedPositionalList<Integer>();
-		MaxHeapPriorityQueue<Integer, Integer> heap2 = new MaxHeapPriorityQueue<Integer, Integer>();
+		HeapPriorityQueue<Integer, Integer> heap2 = new HeapPriorityQueue<Integer, Integer>();
 		
 		for (int i = 0; i < 10; ++i) {
 			list2.addLast(rand.nextInt(100));
@@ -54,7 +68,8 @@ public class HeapSort <E> {
 		}
 		System.out.println("\n----------");
 		
-		heap2.sortInPlace(list2);
+		sortInPlace(list2, heap2);
 	}
+	
 	
 }
