@@ -1,10 +1,14 @@
+/**
+ * This does some in place heap sorting. Very good, yes?
+ * @author John O'Leary
+ * @version 1.0
+ * @since April/17/2020
+ */
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
-//package lab.heap;
 
-//import net.datastructures.HeapPriorityQueue;
-//import net.datastructures.PositionalList;
 
 public class MaxHeapPriorityQueue<K,V> extends HeapPriorityQueue<K,V>{
 
