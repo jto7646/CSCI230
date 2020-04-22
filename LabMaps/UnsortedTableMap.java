@@ -128,6 +128,22 @@ public class UnsortedTableMap<K,V> extends AbstractMap<K,V> {
   // *****************************************************
 
 
+  // *****************************************************
+  // -----------V Bellow for Problem Set V----------------
+  // *****************************************************
+
+  public boolean containsKey(K key){
+    // VV Looks for the key within the map
+    int j = findIndex(key);
+    // VV If the key is not found, return false
+    if(j == -1) return false;
+    // VV If the key was found, return true
+    return true;
+  }
+
+  // *****************************************************
+  // *****************************************************
+
 
   //---------------- nested EntryIterator class ----------------
   private class EntryIterator implements Iterator<Entry<K,V>> {

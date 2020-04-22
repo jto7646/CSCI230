@@ -31,6 +31,10 @@ public class LabMapDriver {
             System.out.println(it);
         }
 
+        if(testMap.containsKey(3)) System.out.println("Map contains key 3.");
+
+        if(!testMap.containsKey(7)) System.out.println("Map doesn't contain key 7.");
+
         System.out.print(" **** End of Test ****");
     } // **** END OF MAIN ****  
 
