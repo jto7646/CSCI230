@@ -1,7 +1,7 @@
 /**
  * labMapDriver
  */
-public class labMapDriver {
+public class LabMapDriver {
 
     public static void main(String[] args) {
         UnsortedTableMap testMap = new UnsortedTableMap<Integer, String>();
