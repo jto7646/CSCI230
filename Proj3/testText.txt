@@ -1,0 +1,3 @@
+This is a test string meant to count the number of characters.
+This is the second line of that string.
+There are 7 letter a's!

@@ -1,0 +1,13 @@
+ Create 2 hashing functions, frank used one off of page 423 line 28.
+	- They both need to return int
+ 
+ "Whenever we put something into our HashTable, we calculate
+	our key using both the [first and the second] hash functions.
+	Look in the buckets cooresponding to [the two hashcodes].
+	Whichever bucket is less full, add the key to that bucket."
+
+ Run the two hashcodes in the start of the put function, compare the keys in both buckets.
+ When getting the values out, we will need to use both of the hash codes to check both buckets
+	for the info.
+
+Make the two hash functions(DONE: WORKING), then edit the put(DONE: WORKING), get(DONE: WORKING-ISH), and remove functions(DONE: WORKING-ISH), then lab done.
