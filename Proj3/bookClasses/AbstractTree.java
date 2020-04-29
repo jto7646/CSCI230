@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.datastructures;
+package bookClasses;
 
 import java.util.Iterator;
 import java.util.List;         // for use as snapshot iterator
@@ -210,11 +210,16 @@ public abstract class AbstractTree<E> implements Tree<E> {
       postorderSubtree(root(), snapshot);   // fill the snapshot recursively
     return snapshot;
   }
+  
+
+
 
   /**
    * Returns an iterable collection of positions of the tree in breadth-first order.
    * @return iterable collection of the tree's positions in breadth-first order
    */
+
+   /*
   public Iterable<Position<E>> breadthfirst() {
     List<Position<E>> snapshot = new ArrayList<>();
     if (!isEmpty()) {
@@ -228,5 +233,5 @@ public abstract class AbstractTree<E> implements Tree<E> {
       }
     }
     return snapshot;
-  }
+  }*/
 }

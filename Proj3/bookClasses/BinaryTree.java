@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.datastructures;
+package bookClasses;
 
 /**
  * An interface for a binary tree, in which each node has at most two children.

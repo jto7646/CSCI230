@@ -4,6 +4,9 @@ import java.io.InputStream;
 public class TerminalDriver{
 
     public static void main(String[] args) {
+
+        TreeBuilder test = new TreeBuilder();
+        
         
         // Bellow testing the CharCounter.countAll function: WORKS
         try {
@@ -13,21 +16,26 @@ public class TerminalDriver{
             System.out.println(e);
         }
 
-        // Bellow testing the CharCounter.getCount function: WORKS
-        System.out.println("Should print 7: \n" + CharCounter.getCount(97));
 
-        // Bellow testing the CharCount.set function: WORKS
-        CharCounter.set(97, 200);
-        System.out.println("Should print 200: \n" + CharCounter.getCount(97));
+        test.buildTree(CharCounter.countValues());
 
-        // Bellow testing the CharCounter.add function: WORKS
-        CharCounter.add(97);
-        System.out.println("Should print 201: \n" + CharCounter.getCount(97));
+        test.print(test.getRoot());
 
-        //Bellow testing the CharCounter.clear function: WORKS
-        CharCounter.clear();
-        System.out.println("Should print 0: \n" + CharCounter.getCount(97));
+        TreeNode motest =  new TreeNode(test.getRoot().myValue, test.getRoot().myWeight);
+        System.out.println(" ");
 
+        for (int i = 0; i < test.tree.size(); i++) {
+            System.out.print(" " + test.tree.get(i).myWeight);
+        }
+
+        System.out.println(" ");
+        for (int i = 0; i < test.tree.size(); i++) {
+            System.out.print(" " + test.tree.get(i).myValue);
+        }
+
+        System.out.println("\n" + motest.myValue + " " + motest.myWeight);
+
+      
 
         System.out.println("****END TESTING****");
     }

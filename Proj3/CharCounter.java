@@ -1,6 +1,6 @@
 import java.io.InputStream;
 
-public class CharCounter implements ICharCounter{
+public class CharCounter /*implements ICharCounter*/{
 
     private int numChar;
     private static int[] arr = new int[256];
@@ -10,10 +10,9 @@ public class CharCounter implements ICharCounter{
      * @param ch is the chunk/character for which count is requested
      * @return count of specified chunk, -1 if pased in int is invalid
      */
-    @Override
-    public int getCount(int ch){
+    public static int getCount(int ch){
         // Make sure this conditional Works!!
-        return ((ch > 0) && (ch < 255)) ? arr[ch] : -1;  
+        return ((ch >= 0) && (ch <= 255)) ? arr[ch] : -1;  
     }
     
     /**
@@ -22,14 +21,14 @@ public class CharCounter implements ICharCounter{
      * @return count of all chunks/read
      * @throws IOException if reading fails
      */
-    public int countAll(InputStream stream) /*throws IOException*/{
+    public static int countAll(InputStream stream) /*throws IOException*/{
         // iterate through the stream, get ascii value of character, add one to that location in the array
         int walk = 0;
         int walkCount = 0;
         //boolean endLoop = false;
         try {
             while(true){ // -1 means the stream has reached the end
-                walk = stream.read(); // returns in value )-255
+                walk = stream.read(); // returns in value 0-255
                 if(walk == -1) break;
                 arr[walk]++;
                 walkCount++;   
@@ -45,7 +44,7 @@ public class CharCounter implements ICharCounter{
      * Returns a deep copy of the array of character counts
      * @return int array of character counts
      */
-    public int[] countValues(){
+    public static int[] countValues(){
         return arr.clone();
     }
     
@@ -54,8 +53,8 @@ public class CharCounter implements ICharCounter{
      * Update state to record one occurrence of specified chunk/character.
      * @param i is the chunk being recorded
      */
-    public void add(int i){
-        if((i > 0) && (i < 255)) arr[i]++;
+    public static void add(int i){
+        if((i >= 0) && (i <= 255)) arr[i]++;
     }
     
     /**
@@ -63,23 +62,23 @@ public class CharCounter implements ICharCounter{
      * @param i is the chunk/character whose count is specified
      * @param value is # occurrences of specified chunk
      */
-    public void set(int i, int value){
+    public static void set(int i, int value){
         if((i >= 0) && (i <= 255) && (value >= 0)) arr[i] = value;
     }
     
     /**
      * All counts cleared to zero.
      */
-    public void clear(){
-        for(int i = 0; i < 256; i++) arr[i] = 0;
+    public static void clear(){
+        for(int i = 0; i <= 255; i++) arr[i] = 0;
     }
 
     @Override
     public int[] clone(){
-        int[] arrClone = new int[256];
+        int[] arrClone = new int[255];
         int temp = 0;
 
-        for(int i =  0; i < 256; i++){
+        for(int i =  0; i <= 255; i++){
             temp = arr[i];
             arrClone[i] = temp;
         }
