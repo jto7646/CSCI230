@@ -19,25 +19,26 @@ public class TerminalDriver{
 
         test.buildTree(CharCounter.countValues());
 
-        test.print(test.getRoot());
+        test.huffEncode(test.getRoot());
+
+        /*
 
         TreeNode motest =  new TreeNode(test.getRoot().myValue, test.getRoot().myWeight);
         System.out.println(" ");
-
+        */
+        /*
         for (int i = 0; i < test.tree.size(); i++) {
             System.out.print(" " + test.tree.get(i).myWeight);
         }
-
+        */
         System.out.println(" ");
         for (int i = 0; i < test.tree.size(); i++) {
             System.out.print(" " + test.tree.get(i).myValue);
         }
 
-        System.out.println("\n" + motest.myValue + " " + motest.myWeight);
+       //System.out.println("\n" + motest.myValue + " " + motest.myWeight);
 
-      
-
-        System.out.println("****END TESTING****");
+        System.out.println("\n****END TESTING****");
     }
 
 }
