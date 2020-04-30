@@ -32,8 +32,15 @@ public class TerminalDriver{
         }
         */
         System.out.println(" ");
+        System.out.println("Values ");
         for (int i = 0; i < test.tree.size(); i++) {
             System.out.print(" " + test.tree.get(i).myValue);
+        }
+
+        System.out.println(" ");
+        System.out.println("Weights ");
+        for (int i = 0; i < test.tree.size(); i++) {
+            System.out.print(" " + test.tree.get(i).myWeight);
         }
 
        //System.out.println("\n" + motest.myValue + " " + motest.myWeight);

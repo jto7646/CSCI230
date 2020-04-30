@@ -62,7 +62,7 @@ public class TreeBuilder {
                 // Update sorting array to keep sorting
                 sortingArray.add(sortTemp);
                 sortingArray.remove(0);
-                sortingArray.remove(1);
+                sortingArray.remove(0);
                 // Re-sort array to ready for next combining
                 Collections.sort(sortingArray);
                 System.out.println( "SortArray: ");
@@ -90,7 +90,7 @@ public class TreeBuilder {
         for(int i = 0; i < tree.size(); i++){
             tempNode2 = new TreeNode(tree.get(i).myValue, tree.get(i).myWeight, tree.get(i).myLeft, tree.get(i).myRight);
             if((tempNode1.myWeight == tempNode2.myWeight) && (tempNode1.myValue == tempNode2.myValue)
-                    && (tempNode1.myLeft == tempNode2.myLeft) && (tempNode1.myRight == tempNode2.myRight)){return i;}
+                && (tempNode1.myLeft == tempNode2.myLeft) && (tempNode1.myRight == tempNode2.myRight)){return i;} 
         }
         return -1;
     }
@@ -137,7 +137,7 @@ public class TreeBuilder {
             codeString.remove(codeString.size()-1);
         }
         
-        System.out.println(nxt.myWeight + "  " + codeString.toString());
+        System.out.println("W: " + nxt.myWeight + " V:  " + nxt.myValue + " " + codeString.toString());
         
 
         return "turds";
