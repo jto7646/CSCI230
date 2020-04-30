@@ -20,16 +20,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package bookClasses;
+//package net.datastructures;
+
+import java.util.Comparator;
 
 /**
- * An edge of a graph.
+ * Comparator based on the compareTo method of a Comparable element type.
  *
  * @author Michael T. Goodrich
  * @author Roberto Tamassia
  * @author Michael H. Goldwasser
  */
-public interface Edge<E> {
-  /** Returns the element associated with the edge. */
-  E getElement();
+public class DefaultComparator<E> implements Comparator<E> {
+
+  /**
+   * Compares two elements.
+   *
+   * @return a negative integer if <tt>a</tt> is less than <tt>b</tt>,
+   * zero if <tt>a</tt> equals <tt>b</tt>, or a positive integer if
+   * <tt>a</tt> is greater than <tt>b</tt>
+   */
+  @SuppressWarnings({"unchecked"})
+  public int compare(E a, E b) throws ClassCastException {
+    return ((Comparable<E>) a).compareTo(b);
+  }
 }

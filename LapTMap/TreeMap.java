@@ -206,10 +206,10 @@ public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
   }
 
 
+  // ***********************************************************************************************************
+  // ***********************************************************************************************************
 
-  // ***********************************************************************************************************
-  
-  // ***********************************************************************************************************
+
 
   /**
    * Returns the number of entries in the map.
@@ -547,4 +547,27 @@ public class TreeMap<K,V> extends AbstractSortedMap<K,V> {
     }
   }
 
-}
+
+  public static void main(String args[])
+  {
+    TreeMap<Integer, Integer> test = new TreeMap<>();
+    
+    test.put(1,  3);
+    test.put(2,  6);
+    test.put(5,  6);
+
+    //Position<Entry<Integer, Integer>> walk = test.root();
+   for (Entry<Integer, Integer> enrty : test.entrySet()) {
+        System.out.println(enrty.getValue());
+   }
+
+    System.out.println("Testing the indexOf() function of the root of the search tree" + ": " + test.indexOf(test.root()));
+
+    System.out.println("Testing the atIndex() function of the root of the search tree" + ": " + test.atIndex(1).getElement().getValue());
+  }
+
+
+
+
+
+}// **** END CLASS ****

@@ -19,7 +19,6 @@ public class TreeBuilder {
      */
     public void buildTree(int[] arr) {
         // Temp array holding character counts from the count in array
-        //ArrayList<TreeNode> countArray = new ArrayList<>();
         ArrayList<TreeNode> sortingArray = new ArrayList<>();
         boolean endLoop = false;
         int tempWeight = 0;
