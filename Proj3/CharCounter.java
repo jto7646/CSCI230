@@ -1,4 +1,12 @@
 import java.io.InputStream;
+import java.io.IOException;
+
+/**
+ * 
+ * @author John O'Leary
+ * @version 1.5
+ * @since April/30/2020
+ */
 
 public class CharCounter /*implements ICharCounter*/{
 
@@ -14,32 +22,33 @@ public class CharCounter /*implements ICharCounter*/{
         // Make sure this conditional Works!!
         return ((ch >= 0) && (ch <= 255)) ? arr[ch] : -1;  
     }
-    
+
     /**
      * Initialize state by counting bits/chunks in a stream
      * @param stream is source of data
      * @return count of all chunks/read
      * @throws IOException if reading fails
      */
-    public static int countAll(InputStream stream) /*throws IOException*/{
+    public static int countAll(InputStream stream) throws IOException{
         // iterate through the stream, get ascii value of character, add one to that location in the array
         int walk = 0;
         int walkCount = 0;
-        //boolean endLoop = false;
+        BitInputStream input = new BitInputStream(stream);
         try {
             while(true){ // -1 means the stream has reached the end
-                walk = stream.read(); // returns in value 0-255
+                walk = input.read(); // returns in value 0-255
                 if(walk == -1) break;
                 arr[walk]++;
                 walkCount++;   
             }
             return walkCount;
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (IOException e) {
+            throw e;
         }
-        return -1;
-    }
 
+    }
+    
+    
     /**
      * Returns a deep copy of the array of character counts
      * @return int array of character counts
