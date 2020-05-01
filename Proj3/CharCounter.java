@@ -19,7 +19,6 @@ public class CharCounter /*implements ICharCounter*/{
      * @return count of specified chunk, -1 if pased in int is invalid
      */
     public static int getCount(int ch){
-        // Make sure this conditional Works!!
         return ((ch >= 0) && (ch <= 255)) ? arr[ch] : -1;  
     }
 
