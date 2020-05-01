@@ -35,11 +35,12 @@ public class TreeBuilder {
         }
 
         // Sorts the ArrayList from smallest to largest weight.
-        Collections.sort(tree);
+        //Collections.sort(tree);
 
         // Making second Arraylist for sorting purposes
         for(int i = 0; i < tree.size(); i++){
             sortTemp = new TreeNode(tree.get(i).myValue, tree.get(i).myWeight, null, null);
+            System.out.println(sortTemp.myValue);
             sortingArray.add(sortTemp);
         }
         Collections.sort(sortingArray); 
@@ -53,7 +54,7 @@ public class TreeBuilder {
                 //new combined weight
                 tempWeight = sortingArray.get(0).myWeight + sortingArray.get(1).myWeight;
                 // New parent node of combined weight pointing to left and right children in tree
-                sortTemp = new TreeNode(0, tempWeight, tree.get(getIndex(sortingArray.get(0))), tree.get(getIndex(sortingArray.get(1))));
+                sortTemp = new TreeNode(300, tempWeight, tree.get(getIndex(sortingArray.get(0))), tree.get(getIndex(sortingArray.get(1))));
                 // Update tree with new parent node
                 tree.add(sortTemp);
                 // Update sorting array to keep sorting

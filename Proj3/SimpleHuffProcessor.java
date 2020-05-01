@@ -13,9 +13,33 @@ public class SimpleHuffProcessor implements IHuffProcessor {
         int walkCount = 0;
         char codeCheck = ' ';
         String[] codeMap = HuffEncoder.encoding();
-        String s2b = " ";
+        String s2b = "";
+        String codeLen = "";
         BitInputStream  bitIn = new BitInputStream(in);
         BitOutputStream bitOut = new BitOutputStream(out);
+
+        
+        // Writes the code array at the top of the file (Decode, read length of code from 8-bit chunk, use that length to read the code)
+        // A space at top of file ensures the following is the array, and the file will correctly decompress
+        out.write(32);
+        for (int i = 0; i < codeMap.length; i++) {
+            //bitOut.writeBits(8, i);
+            // Value of the character
+            s2b = codeMap[i];
+            // If null, make it zero
+            if(s2b == null){s2b = "0";}
+            // Record length of code
+            codeLen += s2b.length();
+            // Write the length of the code, to use for decoding
+            bitOut.writeBits(8, Integer.valueOf(codeLen));
+            codeLen = "";
+            // Write the value of the character
+            bitOut.writeBits(s2b.length(), Integer.valueOf(s2b));
+            // Write a space
+            out.write(32);
+        }
+        out.write(10);
+
 
         try {
             while(true){
@@ -27,10 +51,11 @@ public class SimpleHuffProcessor implements IHuffProcessor {
                 codeCheck = (char) walk;
                 // find the huff code for the character
                 s2b = codeMap[codeCheck];
-                System.out.println(s2b);
+                System.out.println("RDB:\n" + walk);
                 // write the code to new file
-                System.out.println(walk);
-                bitOut.write(s2b.getBytes());
+                System.out.println("HCS:\n" + s2b);
+                bitOut.writeBits(s2b.length(), Integer.valueOf(s2b));
+                bitOut.flush();
                 walkCount += 8;
             }
             return walkCount;       

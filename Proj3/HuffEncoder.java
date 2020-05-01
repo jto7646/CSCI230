@@ -44,9 +44,8 @@ public class HuffEncoder {
             sb.append(codeString.get(i));
         }
 
-
+        if(nxt.myValue == 300){return;}
         encodedBinary[nxt.myValue] = sb.toString();
-        
         //System.out.println("W: " + nxt.myWeight + " V:  " + nxt.myValue + " " + codeString.toString());
     }
 }// **** END CLASS ****

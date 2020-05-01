@@ -298,7 +298,7 @@ public class HuffViewer extends JFrame {
         try {
             String[] binary = HuffEncoder.encoding();
 
-            for (int i = 1; i < binary.length; i++) {
+            for (int i = 0; i < binary.length; i++) {
                 if(binary[i] != null){
                     code = i + "\t" + binary[i];
                     update(code);
