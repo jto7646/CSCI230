@@ -146,6 +146,18 @@ public class HuffViewer extends JFrame {
                 myFast = !myFast;
             }
         });
+        menu.add(new AbstractAction("Charcounts") {                                             // **** NEW
+            public void actionPerformed(ActionEvent ev) {
+                clear();
+                prntCharCount();
+            }
+        });
+        menu.add(new AbstractAction("Charcodes") {                                             // **** NEW
+            public void actionPerformed(ActionEvent ev) {
+                clear();
+                prntCharCode();
+            }
+        });
         menu.add(force);
         menu.add(fast);
         return menu;
@@ -249,6 +261,52 @@ public class HuffViewer extends JFrame {
         } catch (IOException e) {
             showError("IOException, uncompression halted from viewer");
             e.printStackTrace();
+        }
+    }
+
+    // **** NEW                                                                                             // **** NEW
+    /**
+     * Prints the number of characters in the file
+     */
+    private void prntCharCount(){
+        String count = " "; 
+        showMessage("showing character count");
+
+        try {
+            int[] countArray = CharCounter.countValues();
+            
+            for (int i = 0; i < countArray.length; i++) {
+                if(countArray[i] != 0){
+                    count = i + "\t" + countArray[i];
+                    update(count); 
+                }
+            }
+
+        } catch (Exception e) {
+            showError("cannot access character count for ");
+            return;
+        }
+    }
+                                                                                                            // **** NEW
+    /**
+     * Prints the binary huff code of the characters in the file
+     */
+    private void prntCharCode(){
+        String code = " ";
+        showMessage("showing character binary codes");
+
+        try {
+            String[] binary = HuffEncoder.encoding();
+
+            for (int i = 1; i < binary.length; i++) {
+                if(binary[i] != null){
+                    code = i + "\t" + binary[i];
+                    update(code);
+                }
+            }
+        } catch (Exception e) {
+            showError("cannot access character binary codes");
+            return;
         }
     }
 

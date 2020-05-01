@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class CharCounter /*implements ICharCounter*/{
 
-    private int numChar;
+    //private int numChar;
     private static int[] arr = new int[256];
 
     /**

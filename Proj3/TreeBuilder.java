@@ -1,14 +1,16 @@
-//import bookClasses.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * This class will be used to build huffman trees
+ * This class builds huffman trees using an array of character values passed in from CharCounter
+ * @author John O'Leary
+ * @version 1.0
+ * @since April/29/2020
  */
 public class TreeBuilder {
 
     public static ArrayList<TreeNode> tree;
-    private static ArrayList<String> codeString = new ArrayList<>();
     //private static String codeString;
 
     public TreeBuilder() {tree = new ArrayList<>();}
@@ -42,9 +44,6 @@ public class TreeBuilder {
         }
         Collections.sort(sortingArray); 
 
-        
-        
-        
         while(!endLoop){
             //check the two smallest weights
             // Array is being sorted, so first two non-null values encountered are the ones being combined
@@ -55,7 +54,6 @@ public class TreeBuilder {
                 tempWeight = sortingArray.get(0).myWeight + sortingArray.get(1).myWeight;
                 // New parent node of combined weight pointing to left and right children in tree
                 sortTemp = new TreeNode(0, tempWeight, tree.get(getIndex(sortingArray.get(0))), tree.get(getIndex(sortingArray.get(1))));
-                System.out.println("NewNode- w:" + sortTemp.myWeight + " lftwt: " + tree.get(getIndex(sortingArray.get(0))).myWeight + " rtwt: " + tree.get(getIndex(sortingArray.get(1))).myWeight );
                 // Update tree with new parent node
                 tree.add(sortTemp);
                 // Update sorting array to keep sorting
@@ -64,17 +62,13 @@ public class TreeBuilder {
                 sortingArray.remove(0);
                 // Re-sort array to ready for next combining
                 Collections.sort(sortingArray);
-                System.out.println( "SortArray: ");
-                for (int j = 0; j < sortingArray.size(); j++) {
-                    System.out.print(" " + sortingArray.get(j).myWeight);
-                }
-                System.out.println( " ");
             }
             else{endLoop = true;}
             
         }
         // The tree should now be built!
     }// * END buildTree *
+   
 
 
     /**
@@ -108,42 +102,7 @@ public class TreeBuilder {
     } 
 
 
-
-    public static String huffEncode(TreeNode nxt){
-
-        // Need to log every left(0) and right(1) branch on the way to a 
-        //      character, then print out whole string
-
-        //TreeNode temp = nxt;
-        
-        if(nxt.myLeft != null){
-            // Append a 0 to string
-            codeString.add("0");
-            huffEncode(nxt.myLeft);
-            // Print Current Code
-            //System.out.println(temp.myValue + "  " + codeString.toString());
-            // remove a 0 from string
-            codeString.remove(codeString.size()-1);
-        }
-       
-        if(nxt.myRight != null){
-            //append a 1 to string
-            codeString.add("1");
-            huffEncode(nxt.myRight);
-            // Print Current code
-            //System.out.println(temp.myValue + "  " + codeString.toString());
-            //remove a 1 from string
-            codeString.remove(codeString.size()-1);
-        }
-        
-        System.out.println("W: " + nxt.myWeight + " V:  " + nxt.myValue + " " + codeString.toString());
-        
-
-        return "turds";
-    }
-
-
-
+    // For testing purposes
     public static void print(TreeNode nxt){
         TreeNode temp = nxt;
         
