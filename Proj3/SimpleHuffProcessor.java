@@ -42,7 +42,7 @@ public class SimpleHuffProcessor implements IHuffProcessor {
             s2b = codeMap[i];
             // If null, make it zero
             if(s2b == null){
-                s2b = "00000000";
+                s2b = "0";
             }
             // Record length of code
             codeLen = s2b.length();
@@ -143,7 +143,7 @@ public class SimpleHuffProcessor implements IHuffProcessor {
         }
         // If the character has no code, make it null in array
         for (int i = 0; i < decodeArr.length; i++) {
-            if(decodeArr[i].equals("00000000")){decodeArr[i] = null;}
+            if(decodeArr[i].equals("0")){decodeArr[i] = null;}
         }
         // ****************************************************
         // ****************************************************
@@ -167,7 +167,6 @@ public class SimpleHuffProcessor implements IHuffProcessor {
                     // If the building code string matches a code in the map, write the associated character
                     if(decodeArr[i].equals(codeString.toString())){
                         out.write(i);
-                        System.out.println("Decoded: " + codeString.toString() + " as " + (char) i);
                         // vv make ready for next code input
                         codeString = new StringBuilder(0);
                     }
