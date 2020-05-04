@@ -11,8 +11,10 @@ import java.util.Collections;
 public class TreeBuilder {
 
     public static ArrayList<TreeNode> tree;
-    //private static String codeString;
 
+    /**
+     * Creates an empty tree ready for building
+     */
     public TreeBuilder() {tree = new ArrayList<>();}
 
     /**
@@ -26,16 +28,13 @@ public class TreeBuilder {
         int tempWeight = 0;
         TreeNode sortTemp;
 
-        // Don't want to include any character counts of 0
+        // Fills the tree with nodes holding character count values
         for(int i = 0; i <= 255; i++){
-            if(arr[i] != 0){
+            if(arr[i] != 0){//Exclude caracters with counts of 0
                 TreeNode tempNode = new TreeNode(i, arr[i], null, null);
                 tree.add(tempNode);
             }
         }
-
-        // Sorts the ArrayList from smallest to largest weight.
-        //Collections.sort(tree);
 
         // Making second Arraylist for sorting purposes
         for(int i = 0; i < tree.size(); i++){
@@ -43,12 +42,18 @@ public class TreeBuilder {
             System.out.println(sortTemp.myValue);
             sortingArray.add(sortTemp);
         }
+        // Sorts the second array by lowest weight first
         Collections.sort(sortingArray); 
 
+        // This loop builds the tree using the following steps:
+        //      1. Combine the weight of the first two nodes in the array.
+        //          Since the array is sorted each loop iteration, the first two nodes
+        //          always have the smallest weights
+        //      2. Make a new parent node with the combined weight from part 1, it left and right pointers
+        //          pointing to the children in the original tree array
+        //      3. Add this new parent node to both arrays, then remove the children from the sorting array
+        //      4. Re-sort the sorting array, then repeat the proccess. Size of one means the tree is now complete
         while(!endLoop){
-            //check the two smallest weights
-            // Array is being sorted, so first two non-null values encountered are the ones being combined
-            
             if( 1 < sortingArray.size()){
                 //combine get(0) with get(1) in new parent node 
                 //new combined weight
@@ -64,10 +69,8 @@ public class TreeBuilder {
                 // Re-sort array to ready for next combining
                 Collections.sort(sortingArray);
             }
-            else{endLoop = true;}
-            
+            else{endLoop = true;}   
         }
-        // The tree should now be built!
     }// * END buildTree *
    
 
@@ -79,14 +82,16 @@ public class TreeBuilder {
      */
     private static int getIndex(TreeNode ind){
         TreeNode tempNode1, tempNode2;
+        // Make a new node with the values of the node passed in
         tempNode1 = new TreeNode(ind.myValue, ind.myWeight, ind.myLeft, ind.myRight);
 
+        // Loop through tree array, returning the index storing the node that matches the one passed in
         for(int i = 0; i < tree.size(); i++){
             tempNode2 = new TreeNode(tree.get(i).myValue, tree.get(i).myWeight, tree.get(i).myLeft, tree.get(i).myRight);
             if((tempNode1.myWeight == tempNode2.myWeight) && (tempNode1.myValue == tempNode2.myValue)
                 && (tempNode1.myLeft == tempNode2.myLeft) && (tempNode1.myRight == tempNode2.myRight)){return i;} 
         }
-        return -1;
+        return -1; // -1 means the node was not found int the tree array
     }
 
 
@@ -101,18 +106,5 @@ public class TreeBuilder {
         }
         return root;
     } 
-
-
-    // For testing purposes
-    public static void print(TreeNode nxt){
-        TreeNode temp = nxt;
-        
-        if(temp.myLeft != null){print(temp.myLeft);}
-        if(temp.myRight != null){print(temp.myRight);}
-
-        System.out.println("w: " + temp.myWeight + " v: " + temp.myValue);
-        //return 1;
-        
-    }
 
 }// **** END CLASS ****

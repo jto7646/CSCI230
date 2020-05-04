@@ -262,6 +262,7 @@ public class HuffViewer extends JFrame {
             showError("IOException, uncompression halted from viewer");
             e.printStackTrace();
         }
+        showMessage("File Decompressed");
     }
 
     // **** NEW                                                                                             // **** NEW
@@ -372,10 +373,12 @@ public class HuffViewer extends JFrame {
             showError("could not open " + file.getName());
             e.printStackTrace();
         }
+        showMessage("File Compressed");
         myFile = null;
     }
 
     private void cleanUp(File f) {
+        f.delete();
         if (!f.delete()) {
             showError("trouble deleting " + f.getName());
         } else {

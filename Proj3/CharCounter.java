@@ -2,15 +2,17 @@ import java.io.InputStream;
 import java.io.IOException;
 
 /**
- * 
+ * CharCounter counts all ASCII characters in a file by reading the files binary
  * @author John O'Leary
  * @version 1.5
  * @since April/30/2020
  */
 
-public class CharCounter /*implements ICharCounter*/{
+public class CharCounter {
 
-    //private int numChar;
+    // The "Map" storing the counts for each character in the file
+    //      The array index is the ASCII character, the number stored 
+    //      in that index is count
     private static int[] arr = new int[256];
 
     /**
@@ -83,6 +85,9 @@ public class CharCounter /*implements ICharCounter*/{
         for(int i = 0; i <= 255; i++) arr[i] = 0;
     }
 
+    /**
+     * Used to deep clone the Array
+     */
     @Override
     public int[] clone(){
         int[] arrClone = new int[255];
