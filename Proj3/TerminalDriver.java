@@ -11,7 +11,7 @@ public class TerminalDriver{
 
     public static void main(String[] args) {
 
-        HuffViewer gui = new HuffViewer("Test Window");
+        HuffViewer gui = new HuffViewer("Huffman Compression");
         IHuffProcessor proc = new SimpleHuffProcessor();
         gui.setModel(proc); 
         System.out.println("Program now running.");

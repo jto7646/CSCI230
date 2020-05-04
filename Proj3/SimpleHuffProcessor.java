@@ -52,7 +52,6 @@ public class SimpleHuffProcessor implements IHuffProcessor {
             for (int j = 0; j < s2b.length(); j++) {
                 bitOut.writeBits(1, Integer.valueOf(s2b.charAt(j)));
             }
-            System.out.println(" ");
         }
 
         // Reads in a byte from the file, converts it to a character, then uses that 
