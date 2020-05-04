@@ -40,8 +40,10 @@ public class CharCounter /*implements ICharCounter*/{
                 arr[walk]++;
                 walkCount++;   
             }
+            input.close();
             return walkCount;
         } catch (IOException e) {
+            input.close();
             throw e;
         }
 
