@@ -2,11 +2,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.nio.ByteBuffer;
 
+/**
+ * "Compresses" and "decompresses" passed in files
+ * @author John O'Leary
+ * @version 1.2
+ * @since May/03/2020
+ */
 public class SimpleHuffProcessor implements IHuffProcessor {
     
     private HuffViewer myViewer;
+    // vv Hold the map of codes read from the top of the file being decompressed
     private String[] decodeArr = new String[256];
     
     /**
@@ -17,44 +23,41 @@ public class SimpleHuffProcessor implements IHuffProcessor {
      * @throws IOException If the file is unable to compress for any reason
      */
     public int compress(InputStream in, OutputStream out, boolean force) throws IOException {
-        int walk = 0;
-        int walkCount = 0;
-        char codeCheck = ' ';
-        String[] codeMap = HuffEncoder.encoding();
-        String s2b = "";
-        int codeLen = 0;
-        BitInputStream  bitIn = new BitInputStream(in);
+        int walk = 0;   // Temp storage for incoming byte from read file
+        int walkCount = 0;  // Number of total bits read
+        char codeCheck = ' ';   // Used as a key to find the code in the code map
+        String[] codeMap = HuffEncoder.encoding(); // Stores the character codes, copied from HuffEncode
+        String s2b = "";    // Temp string storage 
+        int codeLen = 0;    // Temp storage for code length (array storage)
+        BitInputStream  bitIn = new BitInputStream(in); 
         BitOutputStream bitOut = new BitOutputStream(out);
 
-        String test = " ";
-
-        // Writes the code array at the top of the file (Decode, read length of code from 8-bit chunk, use that length to read the code)
+        // Writes the code array at the top of the file. It first writes the number of bits in the code, then 
+        // the code itself. In the decode proccess, the code length is first read, then the code is read using the length
+        // as a guide.
         // A space at top of file ensures the following is the array, and the file will correctly decompress
         out.write(32);
         for (int i = 0; i < codeMap.length; i++) {
-
             // Value of the character
             s2b = codeMap[i];
             // If null, make it zero
             if(s2b == null){
                 s2b = "00000000";
             }
-
             // Record length of code
             codeLen = s2b.length();
             // Write the length of the code, to use for decoding
-            bitOut.writeBits(8, codeLen);;
-            System.out.print("Pass: " + i + " Code length: " + codeLen + " Written: ");
-        
+            bitOut.writeBits(8, codeLen);
             // Write the value of the character
             for (int j = 0; j < s2b.length(); j++) {
-                System.out.print(s2b.charAt(j));
                 bitOut.writeBits(1, Integer.valueOf(s2b.charAt(j)));
             }
             System.out.println(" ");
         }
-        //out.write(10);
 
+        // Reads in a byte from the file, converts it to a character, then uses that 
+        // caracter to look up the huffman code. The huffman code is writen to the new 
+        // file.
         try {
             while(true){
                 // Read first eight bits
@@ -65,13 +68,11 @@ public class SimpleHuffProcessor implements IHuffProcessor {
                 codeCheck = (char) walk;
                 // find the huff code for the character
                 s2b = codeMap[codeCheck];
-                System.out.print("RDB: " + codeCheck);
                 // write the code to new file
-                System.out.println(" HCS: " + s2b);
                 for (int i = 0; i < s2b.length(); i++) {
                     bitOut.writeBits(1, Integer.valueOf(s2b.charAt(i)));
                 }
-                walkCount += 8;
+                walkCount += 8; // Number of bits read
             }
             bitIn.close();
             bitOut.close();
@@ -83,13 +84,19 @@ public class SimpleHuffProcessor implements IHuffProcessor {
         }
     }// ** END COMPRESS **
 
-
+    /**
+     * Creates huffman character codes for a passed in file
+     * @param in The input stream that generates huffman character codes.
+     */
     public int preprocessCompress(InputStream in) throws IOException {
         try {
-            int counted = CharCounter.countAll(in);
+            // Count the characters
+            int counted = CharCounter.countAll(in); 
             int[] countedArray = CharCounter.countValues();
+            // Build the huffman tree
             TreeBuilder countedTree = new TreeBuilder();
             countedTree.buildTree(countedArray);
+            // Create the huffman character codes
             HuffEncoder.huffEncode(countedTree.getRoot());
             return counted;
         } catch (IOException e) {
@@ -101,19 +108,18 @@ public class SimpleHuffProcessor implements IHuffProcessor {
         myViewer = viewer;
     }
 
+     /**
+      * "Decompresses" files that were previously "compressed" by this program
+      * @param in the stream with the compressed file to be decompressed
+      * @param out the stream to the file writing the uncompressed file
+      */
     public int uncompress(InputStream in, OutputStream out) throws IOException { 
         int codeCount = 0;
         int code = 0;
         BitInputStream bitIn = new BitInputStream(in);
         StringBuilder codeString = new StringBuilder(0);
-        boolean uncompress = true;
-        //1. read in the code array
-        //2. used the code array to compare the incoming bits for decompression
-        //      - Make a copy of the code array
-        //      - read in a bit, compare to the array
-        //      - remove the locations in the array that do not match the incoming bits
-        //      - repeat until only one location is left in the array
-        
+
+
         // *** Bellow for building array of encoded values ****
         // ****************************************************
         // If the first character in the file is not a space, cannot decompress file
@@ -122,13 +128,12 @@ public class SimpleHuffProcessor implements IHuffProcessor {
             bitIn.close();
             return -1;
         }
-
-        // Read in length of the code, then read the length number of bits into the code array
+        // Read in length of the code, then read the codes number of bits into the code array
         for (int i = 0; i < decodeArr.length; i++) {
-            //read in number of bits 
+            //read in number of bits (length of character code) 
             codeCount = bitIn.read();
         
-            // Create the code string
+            // Create the code string (reads the number of bits found above)
             for (int j = 0; j < codeCount ; j++) {
                 codeString.append(bitIn.readBits(1));
             }
@@ -136,18 +141,18 @@ public class SimpleHuffProcessor implements IHuffProcessor {
             decodeArr[i] = codeString.toString();
             codeString = new StringBuilder(0);
         }
-
-        
         // If the character has no code, make it null in array
         for (int i = 0; i < decodeArr.length; i++) {
             if(decodeArr[i].equals("00000000")){decodeArr[i] = null;}
-            System.out.println("Value: " + i + " Code: " + decodeArr[i]);
         }
         // ****************************************************
         // ****************************************************
 
+
         // ********** Bellow is the decoding process **********
         // ****************************************************
+        // Slowly build a sting of binary comparing it to the codes in the map
+        // Once a match is found, output the character associated with it.
         try{
         codeString = new StringBuilder(0);
         while (true) { 
@@ -158,10 +163,12 @@ public class SimpleHuffProcessor implements IHuffProcessor {
             // Search the code array, writing the character of the code when found
             codeString.append(String.valueOf(code));
             for (int i = 0; i < decodeArr.length; i++) {
-                if(decodeArr[i] != null){
+                if(decodeArr[i] != null){ // null means 0 count for a character
+                    // If the building code string matches a code in the map, write the associated character
                     if(decodeArr[i].equals(codeString.toString())){
                         out.write(i);
-                        System.out.println(codeString.toString());
+                        System.out.println("Decoded: " + codeString.toString() + " as " + (char) i);
+                        // vv make ready for next code input
                         codeString = new StringBuilder(0);
                     }
                 }

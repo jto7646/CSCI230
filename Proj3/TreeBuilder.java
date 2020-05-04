@@ -10,6 +10,7 @@ import java.util.Collections;
  */
 public class TreeBuilder {
 
+    // The ArrayList holding the huff tree
     public static ArrayList<TreeNode> tree;
 
     /**
@@ -39,7 +40,6 @@ public class TreeBuilder {
         // Making second Arraylist for sorting purposes
         for(int i = 0; i < tree.size(); i++){
             sortTemp = new TreeNode(tree.get(i).myValue, tree.get(i).myWeight, null, null);
-            System.out.println(sortTemp.myValue);
             sortingArray.add(sortTemp);
         }
         // Sorts the second array by lowest weight first

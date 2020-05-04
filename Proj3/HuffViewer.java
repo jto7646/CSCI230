@@ -262,7 +262,6 @@ public class HuffViewer extends JFrame {
             showError("IOException, uncompression halted from viewer");
             e.printStackTrace();
         }
-        showMessage("File Decompressed");
     }
 
     // **** NEW                                                                                             // **** NEW
@@ -272,7 +271,8 @@ public class HuffViewer extends JFrame {
     private void prntCharCount(){
         String count = " "; 
         showMessage("showing character count");
-
+        // Copies the character counts from CharCounter, then itterates through
+        //      printing the character counts. Skips those with count 0.
         try {
             int[] countArray = CharCounter.countValues();
             
@@ -295,7 +295,8 @@ public class HuffViewer extends JFrame {
     private void prntCharCode(){
         String code = " ";
         showMessage("showing character binary codes");
-
+        // Copies the code map from HuffEncoder, then iterates through
+        //      printing the character codes. Skips those without codes
         try {
             String[] binary = HuffEncoder.encoding();
 
@@ -373,7 +374,6 @@ public class HuffViewer extends JFrame {
             showError("could not open " + file.getName());
             e.printStackTrace();
         }
-        showMessage("File Compressed");
         myFile = null;
     }
 
