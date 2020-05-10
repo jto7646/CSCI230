@@ -1,0 +1,23 @@
+Plagiarism Project:
+
+	Requirements:
+	- The input will be a set of plain text documents and a number n
+	- The output will be some representation showing the number of n-word sequences
+		each document has in common with every other document in the set
+	- Need to identify "suspicious" groups of documents that share many common word 
+		sequences among themsevles
+	- Program should accept aditional input representing the detectio threshhold, which is the 
+		number of matches for a pair of documents above which plagarism is flagged
+	
+	
+	My requirements:
+	- need to read in from nmore than one file at a time, pass in a folder maybe?
+	- Create a gui, if have the time
+	- Make a list ordered by the number of hits? BST for quick searching, maybe?
+	- need to come up with a way to compare the n sized word chunks...
+		- read in six words, all of the characters between spaces ( for first document )
+		- read in six words for next document, comparing them to the words from the first.
+		- go through the rest of the documents in this fashion
+		- Compare six word chunks in second document with the rest of the folder, ignoring the first
+			(already compared)
+		- (BST might hold sets, only allows for one of each weight)
