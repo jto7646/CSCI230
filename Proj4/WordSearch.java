@@ -2,107 +2,132 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class WordSearch implements Runnable{
-    private Thread red;
-    private String threadName;
+public class WordSearch {
     private InputStream input;
-    private ArrayList<String> compare;
-    boolean isRunning;
-    int matchCount;
-
-    public WordSearch(String name, InputStream in, ArrayList<String> comp){
-        threadName = name;
-        input = in;
-        compare = comp;
-    }
-
-    public void wordList(ArrayList<String> comp){compare = comp;}
-
-    public void inputFile(InputStream in){input = in;}
-
-    @Override
-    public void run(){
-        isRunning = true;
-        ArrayList<String> incoming = new ArrayList<>();
-        StringBuilder build = new StringBuilder(0);
-        int temp = 0;
-        int same = 0;
-        matchCount = 0;
-        
-
-        if(compare.size() != 6){return;}
-
-        try {
-
-            // Build out initial list of six words to compare
-            while(true){
-                // Build word
-                while(true){
-                    // reads in one character
-                    temp = input.read();
-                    // Space or end of file hit
-                    if(temp == 32 || temp == -1){break;}
-                    // Append character to string
-                    build.append((char) temp);
-                }
-                // Add word to arrayList
-                incoming.add(build.toString());
-                build = new StringBuilder(0); // clear stringbuilder
-
-                // Six words to compare to
-                if(incoming.size() == 6){break;}
-                // End of file, break
-                if(temp == -1){break;}
-            }
-
-            // The process of comparing words
-            while (true){
-                
-
-                // Compare each word in the lists. If all six match, add one to match count
-                for (int i = 0; i < incoming.size(); i++) {
-                    if(compare.get(i).equals(incoming.get(i))){
-                        same++;
-                    }
-                }
-                if(same == 6){matchCount++;}
-
-                // Read in another word from the document
-                while(true){
-                    temp = input.read();
-
-                    // Space of end of document
-                    if(temp == 32 || temp == -1){break;}
-                    // Build new word
-                    build.append((char) temp);
-                }
-                if(temp == -1){break;}
-
-                // Shift compare list over one word
-                incoming.remove(0);
-                incoming.add(build.toString());
-                build = new StringBuilder(0); 
-
-                /*
-                // for testing
-                for (int i = 0; i < incoming.size(); i++) {
-                    System.out.print(incoming.get(i) + " ");
-                }*/
-                System.out.print("\n Size: " + incoming.size() + " compsize: " + compare.size() + "\n");
-            }
-        } catch (Exception e) {
-            System.out.println("Thread " + threadName + " error " + e);
-            isRunning = false;
-        } 
-
-        isRunning = false;
-    }// RUN
-
-    public void start(){
-        if(red == null){
-            red = new Thread(this, threadName);
-            red.start();
-        }
-    }
+    private TreeMap<Integer, Integer> searchTree;
+    private int sSize;
+    private int matchCount = 0;
     
+
+    /**
+     * 
+     * @param in
+     * @param sequenceSize
+     */
+    public WordSearch(InputStream in, int sequenceSize, TreeMap<Integer, Integer> searching){
+        input = in;
+        sSize = sequenceSize;
+        searchTree = searching;
+    }
+
+    /**
+     * Changes the input file used to build the binary tree
+     * @param in input stream of the text document
+     */
+    public void changeStream(InputStream in){ input = in; }
+
+    public int getMatches(){return matchCount;}
+
+    public void setCompareFile(TreeMap<Integer, Integer> searching){searchTree = searching;}
+
+    /**
+     * Builds a red-black binary tree of hash values of specified word chunks from the text document
+     * @return a binary tree of hash values
+     */
+    public int compareFiles(){
+        boolean prevAlid = false;
+        int temp = 0;
+        ArrayList<String> incoming = new ArrayList<>();
+        StringBuilder sBuilder = new StringBuilder(0);
+
+        // Safety First!!
+        if(sSize <= 0){ System.out.println("Sequence size must be larger than zero..."); return -1;}
+    
+        try { 
+            // Build initial list of six words
+            while (true) {
+                // Read in a character
+                temp = input.read();
+                if(temp == -1){break;}// EOF break
+                // Checks for characters/numbers only
+                if(isValid(temp)){ // Valid add to the string
+                    sBuilder.append((char) temp);
+                    prevAlid = true;
+                }
+                // Word ends if last was valid and current is not 
+                else if(!isValid(temp) && prevAlid){
+                    incoming.add(sBuilder.toString());
+                    // Clears the string builder
+                    sBuilder.setLength(0);
+                    prevAlid = false;
+                }
+                else{prevAlid = false;}
+                // When six words collected, break loop
+                if(incoming.size() == sSize){break;}
+            }//END WHILE
+            if(temp == -1){System.out.print("File less than " + sSize + " words..."); return -1;}
+
+            // ---------------------------------------------------
+            // Now read through, compare the currrent chunk with the tree, then update the chunk
+            while (true) {
+
+                // *** Hash string, compare to tree ***
+                for (int i = 0; i < incoming.size(); i++) {
+                    // Build a string with the six words
+                    sBuilder.append(incoming.get(i));
+                }
+                // Get the hash code for that string
+                temp = sBuilder.toString().hashCode();
+                // Search the tree for the word chunk, note if found
+                if(searchTree.get(temp) != null){matchCount++;}
+                sBuilder.setLength(0);
+                // ********************************
+
+                // Rotate words in the array
+                while (true) {
+                    // Read in a character
+                    temp = input.read();
+                    if(temp == -1){break;}// EOF break
+                    // Checks for characters/numbers only
+                    if(isValid(temp)){ // Valid add to the string
+                        sBuilder.append((char) temp);
+                        prevAlid = true;
+                    }
+                    // Word ends if last was valid and current is not 
+                    else if(!isValid(temp) && prevAlid){
+                        // rotate the new word into the arraylist
+                        incoming.add(sBuilder.toString());
+                        incoming.remove(0);
+                        // Clears the string builder
+                        sBuilder.setLength(0);
+                        prevAlid = false;
+                        break;
+                    }
+                    else{prevAlid = false;}
+                }
+                if(temp == -1){break;}
+            }
+            // --------------------------------------------------------
+            // ********************************************************
+
+        } catch (Exception e) {
+            System.out.println("Error comparing tree: " + e);
+        }
+        System.out.println("File comparing done!");
+        return matchCount;
+    }//ENDBUILD
+
+
+    /**
+     * Checks for a valid character input (', -, 0-9, A-Z, a-z)
+     * @param check input needinf validation
+     * @return true if valid, false if not
+     */
+    private boolean isValid(int check){
+        int tempC = check;
+        if(tempC == 39 /*'*/ || tempC == 45 /*-*/ || (tempC >= 48 && tempC <= 57)/*0-9*/ || (tempC >= 65 && tempC <= 90) /*A-Z*/ || (tempC >= 97 && tempC <122)/*a-z*/){
+            return true;
+        }
+        return false;
+    }
 }

@@ -2,30 +2,43 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class TreeBuilder implements Runnable{
-    private Thread red;
-    private String threadName;
+public class TreeBuilder {
     private InputStream input;
-    TreeMap hashTree;
-    boolean TBRunning = false;
-    int matchCount;
+    private int sSize;
+    
 
-    public TreeBuilder(String name, InputStream in, TreeMap tree){
-        threadName = name;
+    /**
+     * Creates a tree building object, used to build a red-black binary tree of hash values from sequenceSize
+     *  word chunks from text document
+     * @param in
+     * @param sequenceSize
+     */
+    public TreeBuilder(InputStream in, int sequenceSize){
         input = in;
-        hashTree = tree;
+        sSize = sequenceSize;
     }
 
-    public void inputFile(InputStream in){input = in;}
+    /**
+     * Changes the input file used to build the binary tree
+     * @param in input stream of the text document
+     */
+    public void changeStream(InputStream in){ input = in; }
 
-    @Override
-    public void run(){                              //TODO Variable word chunk sizes, passed in 
-        TBRunning = true;
+
+    /**
+     * Builds a red-black binary tree of hash values of specified word chunks from the text document
+     * @return a binary tree of hash values
+     */
+    public TreeMap<Integer, Integer> build(){
+        TreeMap<Integer, Integer> hashTree = new TreeMap<>();
         boolean prevAlid = false;
         int temp = 0;
         ArrayList<String> incoming = new ArrayList<>();
         StringBuilder sBuilder = new StringBuilder(0);
-        
+
+        // Safety First!!
+        if(sSize <= 0){ System.out.println("Sequence size must be larger than zero..."); return null;}
+    
         try { 
             // Build initial list of six words
             while (true) {
@@ -41,14 +54,14 @@ public class TreeBuilder implements Runnable{
                 else if(!isValid(temp) && prevAlid){
                     incoming.add(sBuilder.toString());
                     // Clears the string builder
-                    sBuilder = new StringBuilder(0);
+                    sBuilder.setLength(0);
                     prevAlid = false;
                 }
                 else{prevAlid = false;}
                 // When six words collected, break loop
-                if(incoming.size() == 6){break;}
+                if(incoming.size() == sSize){break;}
             }//END WHILE
-            if(temp == -1){System.out.print("File less than six words..."); return;}
+            if(temp == -1){System.out.print("File less than " + sSize + " words..."); return null;}
 
             // ---------------------------------------------------
             // Now read through, build the tree with 6-word chunks
@@ -63,13 +76,13 @@ public class TreeBuilder implements Runnable{
                 temp = sBuilder.toString().hashCode();
                 // Add the hash code to the binary search tree
                 hashTree.put(temp, temp);
-                sBuilder = new StringBuilder(0);
+                sBuilder.setLength(0);
                 // ********************************
-                System.out.println("Tree size: " + hashTree.size());
+                //System.out.println("Tree size: " + hashTree.size());
 
                 // Rotate words in the array
                 while (true) {
-                     // Read in a character
+                    // Read in a character
                     temp = input.read();
                     if(temp == -1){break;}// EOF break
                     // Checks for characters/numbers only
@@ -83,7 +96,7 @@ public class TreeBuilder implements Runnable{
                         incoming.add(sBuilder.toString());
                         incoming.remove(0);
                         // Clears the string builder
-                        sBuilder = new StringBuilder(0);
+                        sBuilder.setLength(0);
                         prevAlid = false;
                         break;
                     }
@@ -95,19 +108,11 @@ public class TreeBuilder implements Runnable{
             // ********************************************************
 
         } catch (Exception e) {
-            System.out.println("Error in thread " + threadName + ": " + e);
-            TBRunning = false;
+            System.out.println("Error building tree: " + e);
         }
         System.out.println("Tree Building Done!");
-        TBRunning = false;
-    }// RUN
-
-    public void start(){
-        if(red == null){
-            red = new Thread(this, threadName);
-            red.start();
-        }
-    }
+        return hashTree;
+    }//ENDBUILD
 
 
     /**
@@ -123,6 +128,4 @@ public class TreeBuilder implements Runnable{
         return false;
     }
 
-
-    
 }
