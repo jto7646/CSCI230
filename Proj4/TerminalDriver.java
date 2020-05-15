@@ -16,7 +16,8 @@ public class TerminalDriver {
         ArrayList<TreeMap> treeArray = new ArrayList<>(); // holds hash trees for all files 
         TreeMap<Integer, Integer> hashTree = new TreeMap<>(); // creates the hash trees
         ArrayList<File> files = new ArrayList<>();  // Holds the files for comparison
-        ArrayList<MatchSet> matchSets = new ArrayList<>(); // Holds the file matches 
+        ArrayList<MatchSet> matchSets = new ArrayList<>(); // Holds the file matches
+        String fileNames = new String(); // Makes the file name pair 
         Scanner userInput = new Scanner(System.in); // Used for user input
         String userString = new String();   // Used for user input
         int userInt = 0;    // Used for user input 
@@ -25,6 +26,7 @@ public class TerminalDriver {
         File folder; // Directory path 
         TreeBuilder hashBuilder = new TreeBuilder(); // creates the hash trees
         WordSearch compareFiles = new WordSearch(); // compares the two files, needed?
+        int matches = 0;
         
         // Program main loop, Needed?
         while(running){
@@ -103,11 +105,17 @@ public class TerminalDriver {
 
                     // Compare current file to all of the others
                     for (int j = i+1; j < files.size(); j++) {  
-                        
-                        for (Object key : treeArray.get(j).keySet()) {
-                            // TODO: if current key is found in hashTree, iterate 
+                    
+                        // Compares all of the hash values in the current files tree to those in the second files    
+                        for (Object key : hashTree.keySet()) {
+                            // If a match is found, add one to the counter (Check this)
+                            if(treeArray.get(j).get(key) != null){ matches++;}
                         }
-                        // TODO: add count from above to arrayList with MatchSets
+                        // Create the name pair of the files
+                        fileNames = files.get(i).getName() + " " + files.get(j).getName() + ":";
+                        // Record the pair of files compared along with their match count
+                        MatchSet pair = new MatchSet(matches, fileNames);
+                        matchSets.add(pair);
                     }
 
 
@@ -122,24 +130,5 @@ public class TerminalDriver {
 
         System.out.println("End Program");
     }
-
-
-    public class MatchSet {
-        private int match;
-        private String fileNames;
-
-        public MatchSet(int match, String fileNames){
-            this.match = match;
-            this.fileNames = fileNames; 
-        }
-
-        public String getFileNames(){return fileNames;}
-
-        public int getMatchCount(){return match;}
-
-    }
-
-
-
     
 }
