@@ -10,9 +10,10 @@ public class WordSearch {
     
 
     /**
-     * 
-     * @param in
-     * @param sequenceSize
+     * Used to compare word sequences from one file to those in another
+     * @param in InputStream for the first file
+     * @param sequenceSize size of word sequences
+     * @param searching tree of hash values
      */
     public WordSearch(InputStream in, int sequenceSize, TreeMap<Integer, Integer> searching){
         input = in;
@@ -21,14 +22,27 @@ public class WordSearch {
     }
 
     /**
+     * Used to compare word sequences from one file to those in another; InputStream null, sequence 6, TreeMap null
+     */
+    public WordSearch(){this(null, 6, null);}
+
+    /**
      * Changes the input file used to build the binary tree
      * @param in input stream of the text document
      */
     public void changeStream(InputStream in){ input = in; }
 
+    /**
+     * Returns the number of matches found between the two compared files
+     * @return word sequence matches found
+     */
     public int getMatches(){return matchCount;}
 
-    public void setCompareFile(TreeMap<Integer, Integer> searching){searchTree = searching;}
+    /**
+     * Changes the hash tree used for comparing the files
+     * @param searching hash tree of second file
+     */
+    public void setCompareTree(TreeMap<Integer, Integer> searching){searchTree = searching;}
 
     /**
      * Builds a red-black binary tree of hash values of specified word chunks from the text document

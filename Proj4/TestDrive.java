@@ -1,8 +1,6 @@
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.lang.management.ThreadInfo;
-import java.util.ArrayList;
 import java.util.TreeMap;
 
 
@@ -27,10 +25,10 @@ public class TestDrive {
             System.out.println("MT Tree Size: " + compTree.size());
             inward = new FileInputStream("C:\\cygwin64\\home\\CSCI230\\Proj4\\suspicious-document01501.txt");
 
-            searching.setCompareFile(compTree);
+            searching.setCompareTree(compTree);
             searching.changeStream(inward);
 
-            int matches = searching.compFiles();
+            int matches = searching.compareFiles();
 
             System.out.println("Found " + matches + " matches.");
 

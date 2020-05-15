@@ -19,6 +19,12 @@ public class TreeBuilder {
     }
 
     /**
+     * Creates a tree building object, used to build a red-black binary tree of hash values from sequenceSize
+     *  word chunks from text document: input stream null, sequence size 6 
+     */
+    public TreeBuilder(){ this(null, 6);}
+
+    /**
      * Changes the input file used to build the binary tree
      * @param in input stream of the text document
      */
