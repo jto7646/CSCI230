@@ -129,7 +129,7 @@ public class WordSearch {
         }
         System.out.println("File comparing done!");
         return matchCount;
-    }//ENDBUILD
+    }//ENDCOMPARE
 
 
     /**

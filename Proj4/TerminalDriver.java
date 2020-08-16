@@ -50,20 +50,19 @@ public class TerminalDriver {
                     }
 
                     if(files.size() < 2){System.out.println("Not enough compatable files in directory");}
-                    else{dirGood = true;}
+                    else{
+                        System.out.println("Directory selected....");
+                        System.out.println("Number of comparable files: " + files.size());
+                        dirGood = true;
+                    }
 
                 } catch (Exception e) {
                     System.out.println("Error with path..." + e);
                 }
-            }//Directory Selection Loop
+            }//DS
             // ----------------------------------------------------
             // ****************************************************
-            System.out.println("Directory selected....");
-
-            // For testing purposes
-            for (int i = 0; i < files.size(); i++) {
-                System.out.println(files.get(i).getName());
-            }
+           
             
             // ----------------------------------------------------
             // ************* Word Sequence Selection **************
@@ -72,60 +71,66 @@ public class TerminalDriver {
                 userInt = userInput.nextInt();
                 if(userInt > 1){
                     System.out.println("Word sequence size " + userInt + " selected....");
+                    sequenceSize = userInt;
                     break;
                 }
             }
+            userInput.close();
 
+            long start = System.currentTimeMillis();
             // ---------------------------------------------------
             // ************** Comparison loop ********************
-            while(true){
-
-                // Make an array of hashMaps, one from each file, then itterate through them for comparison
-
-                // Make Array of hash trees
-                for (int i = 0; i < files.size(); i++) {
-                    try {
-                        comparing = new FileInputStream(files.get(i).getPath());
-                        // Build a hash tree for the file
-                        hashBuilder = new TreeBuilder(comparing, sequenceSize);
-                        hashTree = hashBuilder.build();
-                        // Add the hashTree to the array
-                        treeArray.add(hashTree);
-
-                    } catch (Exception e) {
-                        System.out.println("File read error - Tree Building: " + e);
-                    }
-
+            int pass = 0;
+            // Make Array of hash trees
+            System.out.println("Building comparison database, please wait...");
+            for (int i = 0; i < files.size(); i++) {
+                //System.out.println("Pass: " + pass);
+                try {
+                    comparing = new FileInputStream(files.get(i).getPath());
+                    // Build a hash tree for the file
+                    hashBuilder = new TreeBuilder(comparing, sequenceSize);
+                    hashTree = hashBuilder.build();
+                    // Add the hashTree to the array
+                    treeArray.add(hashTree);
+                    // Saves recources
+                    comparing.close();
+                } catch (Exception e) {
+                    System.out.println("File read error - Tree Building: " + e);
                 }
-
-                // Compare the hash trees
-                for (int i = 0; i < files.size(); i++) {
-                    // Current file being compared 
-                    hashTree = treeArray.get(i);
-
-                    // Compare current file to all of the others
-                    for (int j = i+1; j < files.size(); j++) {  
-                    
-                        // Compares all of the hash values in the current files tree to those in the second files    
-                        for (Object key : hashTree.keySet()) {
-                            // If a match is found, add one to the counter (Check this)
-                            if(treeArray.get(j).get(key) != null){ matches++;}
-                        }
-                        // Create the name pair of the files
-                        fileNames = files.get(i).getName() + " " + files.get(j).getName() + ":";
-                        // Record the pair of files compared along with their match count
-                        MatchSet pair = new MatchSet(matches, fileNames);
-                        matchSets.add(pair);
-                    }
-
-
-                }
-
+                //pass++;
             }
+            System.out.println("Comparison database built.\nComparing files, please wait...");
+
+            pass = 0;
+            // Compare the hash trees
+            for (int i = 0; i < files.size(); i++) {
+                // Current file being compared 
+                hashTree = treeArray.get(i);
+                //System.out.println("Comparing files, pass: " + pass);
+                // Compare current file to all of the others
+                for (int j = i+1; j < files.size(); j++) {  
+                
+                    // Compares all of the hash values in the current files tree to those in the second files    
+                    for (Object key : hashTree.keySet()) {
+                        // If a match is found, add one to the counter (Check this)
+                        if(treeArray.get(j).get(key) != null){ matches++;}
+                    }
+                    // Create the name pair of the files
+                    fileNames = files.get(i).getName() + " " + files.get(j).getName() + ":";
+                    // Record the pair of files compared along with their match count
+                    MatchSet pair = new MatchSet(matches, fileNames);
+                    matchSets.add(pair);
+                    matches = 0;
+                }
+                //pass++;
+            }
+
+          
             // ---------------------------------------------------
             // ***************************************************
-
-
+            long fin = System.currentTimeMillis();
+            System.out.println("Program time: " + (fin - start)/1000);
+            break;
         }//Program Loop
 
         System.out.println("End Program");

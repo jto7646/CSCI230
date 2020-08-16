@@ -28,7 +28,13 @@ public class TreeBuilder {
      * Changes the input file used to build the binary tree
      * @param in input stream of the text document
      */
-    public void changeStream(InputStream in){ input = in; }
+    public void changeStream(InputStream in){input = in;}
+
+    /**
+     * Changes the sequence size used to build the binary tree
+     * @param sequenceSize The size of the word sequence read form the document
+     */
+    public void changeSequenceSize(int sequenceSize){ sSize = sequenceSize; }
 
 
     /**
@@ -110,13 +116,13 @@ public class TreeBuilder {
                 }
                 if(temp == -1){break;}
             }
+            input.close();
             // --------------------------------------------------------
             // ********************************************************
 
         } catch (Exception e) {
             System.out.println("Error building tree: " + e);
         }
-        System.out.println("Tree Building Done!");
         return hashTree;
     }//ENDBUILD
 

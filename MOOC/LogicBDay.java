@@ -1,8 +1,10 @@
 package mooc.vandy.java4android.birthdayprob.logic;
 
-import mooc.vandy.java4android.birthdayprob.ui.OutputInterface;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Random;
+
+import mooc.vandy.java4android.birthdayprob.ui.OutputInterface;
 
 /**
  * This is where the logic of this App is centralized for this assignment.
@@ -75,45 +77,39 @@ public class Logic
      * We provide you this method that way we can test it with unit testing.
      */
     public double calculate(int size, int count) {
-        int tempInt = 0;
+        int temp = 0;
         double tempDouble = 0.0;
         int doupCount = 0;
 
         // TODO -- add your code here
         // Array holding the birth dates
-        int day[] = new int[364];
-        // Array holding the percentage of same birthdays per simulation
-        double percentArr[] = new double[count];
+        int day[] = new int[365];
 
         // Loop that runs the simulations
         for(int i = 1; i <= count; i++){
-            
+
             // Random object used to randomly select each persons birthday
             Random randDay = new Random(i);
 
             // Make the random set of birthdays, one per person in the group
             for(int j = 0; j < size; j++){
-                temp = randDay.nextInt(364); // get random day
-                day[temp]++; // Add one to that day in the array 
+                temp = randDay.nextInt(365); // get random day
+                day[temp] += 1; // Add one to that day in the array.
+                // If birthday pair is found, take note and end simulation
+                if(day[temp] == 2) {
+                    doupCount++;
+                    break;
+                }
             }
 
-            // calculate the percentage of douplicate days, add to the array for final calculation
-            for (int d : day) { // Finding number of douplicate dates 
-                if (i >= 2){ doupcount++; }
-            }
-            tempDouble = doupCount / 3.65; // Calculating percentage
-            percentArr[i - 1] = tempDouble; // Adding percentage to the array
-            day = new int[364]; // Clears the dat array, ready for next simulation
+            Arrays.fill(day, 0); // Clears the array back to zero values
+
         }
 
-        // Calculate and return the average percentage of all runs
-        tempDouble = 0.0;
-        for (double d : percentArr) {
-            tempDouble += d;   
-        }
-        return tempDouble / count;
+        // Determining the percentage of douplicate birthday simulations
+        tempDouble = doupCount / (double) count;
+        tempDouble *= 100;
 
+        return tempDouble;
     }
-
-    // TODO - add your code here
 }
