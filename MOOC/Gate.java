@@ -76,6 +76,7 @@ public class Gate {
     /**
      * Returns the swign direction of the gate as a String
      */
+    @Override
     public String toString(){
 
         // Determine the position of the gate, then return the appropriate caption 
